@@ -1,7 +1,7 @@
 #!/usr/bin/guile -s
 !#
 
-(do ((c (read-char) (read-char)))
+(do ((c (read) (read)))
     ((eof-object? c) 'done)
   (display c))
 
