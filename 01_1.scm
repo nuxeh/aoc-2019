@@ -3,7 +3,8 @@
 
 (do ((c (read) (read)))
     ((eof-object? c) 'done)
-  (display c))
+  (display c)
+  (newline))
 
 #!
 (let ((x (read)))
