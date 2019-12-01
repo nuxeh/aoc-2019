@@ -3,7 +3,7 @@
 
 (do ((c (read) (read)))
     ((eof-object? c) 'done)
-  (display c)
+  (display (- (round (/ c 3)) 2))
   (newline))
 
 #!
