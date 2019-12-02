@@ -2,11 +2,11 @@
 !#
 
 (define (fuel r t)
-  (display (string-append (number->string r) " "))
+  (display (string-append " " (number->string r) " "))
   (let ((f (- (floor (/ r 3)) 2)))
-    (let ((t (+ t f)))
+    (let ((u (+ t f)))
       (if (> f 0) 
-        (fuel f t)
+        (fuel f u)
 	t))))
 
 (let ((t 0))
