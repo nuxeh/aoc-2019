@@ -6,7 +6,7 @@
   (let ((f (- (floor (/ r 3)) 2)))
     (let ((s (- r f)))
       (let ((t (+ t f)))
-  fuel s t))))
+        (fuel f t)))))
 
 (let ((t 0))
 (do ((c (read) (read)))
