@@ -5,7 +5,9 @@
   (display (string-append (number->string r) " "))
   (let ((f (- (floor (/ r 3)) 2)))
     (let ((t (+ t f)))
-      (fuel f t))))
+      (if (> f 0) 
+        (fuel f t)
+	t))))
 
 (let ((t 0))
 (do ((c (read) (read)))
