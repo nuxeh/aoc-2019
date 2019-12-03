@@ -1,3 +1,5 @@
 (let ((x (read)))
-  (display (string-split (symbol->string x) #\,))
-  (newline))
+  (let ((i (string-split (symbol->string x) #\,)))
+    (display i)
+    (newline)
+    (display (list-head i 4))))
