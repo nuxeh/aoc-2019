@@ -1,10 +1,10 @@
 (use-modules (srfi srfi-1))
 (use-modules (srfi srfi-11))
 
-(define (get-sublist l s f)
-  (list-head (list-tail l 4) f))
+;(define (get-sublist l s f)
+;  (list-head (list-tail l 4) f))
 
-(define (recurse l p r) #t)
+;(define (recurse l p r) #t)
 
 (define (run l r)
   (let-values (((head tail) (split-at l 4)))
