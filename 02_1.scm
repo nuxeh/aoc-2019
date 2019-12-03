@@ -6,13 +6,24 @@
 
 ;(define (recurse l p r) #t)
 
-(define (run l r)
+(define (one l i) #t
+  )
+
+(define (two l i) #t
+  )
+
+(define (get-ins l n c)
   (let-values (((head tail) (split-at l 4)))
+    (display c)
+    (newline)
     (display head)
-    (display tail)))
+    (display tail)
+    (if (< c n)
+      (get-ins tail n (+ n 1))
+      head)))
 
 (let ((x (read)))
   (let ((i (string-split (symbol->string x) #\,)))
     (display i)
     (newline)
-    (display (run i (list 0)))))
+    (display (get-ins i 1 0))))
