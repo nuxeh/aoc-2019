@@ -23,7 +23,7 @@
 
 (define (walk cmd acc)
   (navigate cmd)
-  (display acc)
+  (display (last acc))
   (newline)
   (append acc (list (cons 1 4))))
 
@@ -35,7 +35,7 @@
     (newline)
     (display j)
     (newline)
-    (let ((p/1 (fold walk (list) i)))
+    (let ((p/1 (fold walk (list (cons 0 0)) i)))
 ;    (let ((p/2 (get-path j (list))))
       (display p/1)
 ;      (display p/2)
