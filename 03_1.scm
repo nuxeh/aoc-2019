@@ -24,7 +24,7 @@
 (define (walk cmd acc)
   (display cmd)
   (display acc)
-  (cons acc cmd))
+  (append acc (list cmd)))
 
 (let ((p1 (read)))
   (let ((p2 (read)))
