@@ -27,7 +27,8 @@
 (define (run l pc)
   (let ((ins (get-ins l pc 0)))
     (if (list? ins)
-      (exec l ins)
+      (let ((l2 (exec l ins)))
+      (run l2 (+ pc 1)))
       l)))
 
 (define (get-ins l n c)
