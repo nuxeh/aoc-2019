@@ -12,6 +12,13 @@
 (define (two l i) #t
   )
 
+(define (run l pc)
+  (let ((ins (get-ins l pc 0)))
+    (if (list? ins)
+      (exec l ins)
+      l)))
+
+
 (define (get-ins l n c)
   (let-values (((head tail) (split-at l 4)))
     ;(newline)
@@ -32,8 +39,10 @@
     (display (get-ins i 1 0))
     (display (get-ins i 2 0))
     (display (get-ins i 3 0))
+    (display (run i 0))))
 
-    (do ((j 0 (1+ j)))
-        (let ((c (get-ins i j 0))) ((list? c))
-	  (display c)
-	  (newline)))))
+    
+;    (do ((j 0 (1+ j)))
+;        (let ((c (get-ins i j 0))) ((list? c))
+;	  (display c)
+;	  (newline)))))
