@@ -6,18 +6,23 @@
 
 ;(define (recurse l p r) #t)
 
-(define (one l i) #t
-  )
+; +
+(define (one l i)
+  (list-set! l (fourth i) (+ (list-ref l (second i)) (list-ref l (third i))))
+  l)
 
-(define (two l i) #t
-  )
+; *
+(define (two l i)
+  (list-set! l (fourth i) (* (list-ref l (second i)) (list-ref l (third i))))
+  l)
 
 (define (exec l ins)
   (if ((= (first ins) 1))
     (one l ins)
     (if ((= (first ins) 2))
-      (two l ins)))
-  )
+      (two l ins)
+      (if ((= (first ins) 99))
+        l))))
 
 (define (run l pc)
   (let ((ins (get-ins l pc 0)))
