@@ -17,11 +17,11 @@
   l)
 
 (define (exec l ins)
-  (if ((= (first ins) 1))
+  (if (= (first ins) 1)
     (one l ins)
-    (if ((= (first ins) 2))
+    (if (= (first ins) 2)
       (two l ins)
-      (if ((= (first ins) 99))
+      (if (= (first ins) 99)
         l))))
 
 (define (run l pc)
