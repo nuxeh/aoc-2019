@@ -2,11 +2,12 @@
   (display cmds)
   (newline)
   (if (null? (cdr cmds))
-    p
+    ((navigate (car cmds))
+    p)
     (get-path (cdr cmds) p)))
 
 (define (navigate cmd)
-  (if (eq (first cmd))
+  (if (string=? (string-copy cmd 0 1))
       (display "up")))
 
 (let ((p1 (read)))
