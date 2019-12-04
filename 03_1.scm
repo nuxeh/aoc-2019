@@ -1,4 +1,6 @@
 (define (get-path cmds p)
+  (display cmds)
+  (newline)
   (if (null? (cdr cmds))
     p
     (get-path (cdr cmds) p)))
