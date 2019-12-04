@@ -1,9 +1,9 @@
 (define (get-path cmds p)
-  (display cmds)
-  (newline)
-  (if (null? (cdr cmds))
+  (if (null? (car cmds))
     p
     ((navigate (car cmds))
+    (display (cdr cmds))
+    (display " ")
     (get-path (cdr cmds) p))))
 
 (define (navigate cmd)
