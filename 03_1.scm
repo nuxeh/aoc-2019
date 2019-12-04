@@ -24,7 +24,7 @@
 (define (walk cmd acc)
   (display cmd)
   (display acc)
-  (append acc (list cmd)))
+  (append acc '(cmd cheese)))
 
 (let ((p1 (read)))
   (let ((p2 (read)))
