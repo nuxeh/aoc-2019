@@ -31,6 +31,7 @@
       (run l2 (+ pc 1)))
       l)))
 
+; recurse tails until instruction count reached
 (define (get-ins l n c)
   (let-values (((head tail) (split-at l 4)))
     ;(newline)
