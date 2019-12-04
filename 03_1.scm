@@ -9,8 +9,9 @@
 ;    (get-path (cdr cmds) p))))
 
 (define (navigate cmd acc)
+  (display "[")
   (display cmd)
-  (display " ")
+  (display "] ")
   (let ((pos (last acc)))
     (let ((x (string->number (string-copy cmd 1))))
       (let ((d (string-copy cmd 0 1)))
@@ -33,6 +34,12 @@
 ;(define (walk cmd acc)
 ;  (append acc (list (navigate cmd (last acc)))))
 
+(define (dcol z)
+  (display z)
+  (if (eq? (car z) (cdr z))
+      #t
+      #f))
+
 (let ((p1 (read)))
   (let ((p2 (read)))
     (let ((i (string-split (symbol->string p1) #\,)))
@@ -47,6 +54,8 @@
       (newline)
       (display p/2)
       (newline)
+
+      (display (map dcol (zip p/1 p/2)))
     ))))))
 
 
