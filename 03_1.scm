@@ -34,9 +34,11 @@
     (display j)
     (newline)
     (let ((p/1 (fold walk (list (cons 0 0)) i)))
-;    (let ((p/2 (get-path j (list))))
+    (let ((p/2 (fold walk (list (cons 0 0)) j)))
       (display p/1)
-;      (display p/2)
-    )))))
+      (newline)
+      (display p/2)
+      (newline)
+    ))))))
 
 
