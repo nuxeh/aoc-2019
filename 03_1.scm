@@ -25,7 +25,7 @@
   (navigate cmd)
   (display acc)
   (newline)
-  (append acc '(cmd cheese)))
+  (append acc (list (cons 1 4))))
 
 (let ((p1 (read)))
   (let ((p2 (read)))
