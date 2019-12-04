@@ -38,7 +38,7 @@
       head)))
 
 (let ((x (read)))
-  (let ((i (string-split (symbol->string x) #\,)))
+  (let ((i (map string->number (string-split (symbol->string x) #\,))))
     (display i)
     (newline)
     (display (get-ins i 0 0))
