@@ -52,7 +52,11 @@
     (display (get-ins i 1 0))
     (display (get-ins i 2 0))
     (display (get-ins i 3 0))
-    (display (run i 0))))
+    (newline)
+    (let ((r (run i 0)))
+      (display r)
+      (newline)
+      (display (first r)))))
 
     
 ;    (do ((j 0 (1+ j)))
