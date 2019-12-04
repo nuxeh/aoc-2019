@@ -22,8 +22,9 @@
       (display x))))
 
 (define (walk cmd acc)
-  (display cmd)
+  (navigate cmd)
   (display acc)
+  (newline)
   (append acc '(cmd cheese)))
 
 (let ((p1 (read)))
