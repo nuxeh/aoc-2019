@@ -31,4 +31,9 @@
     (display (get-ins i 0 0))
     (display (get-ins i 1 0))
     (display (get-ins i 2 0))
-    (display (get-ins i 3 0))))
+    (display (get-ins i 3 0))
+
+    (do ((j 0 (1+ j)))
+        (let ((c (get-ins i j 0))) ((list? c))
+	  (display c)
+	  (newline)))))
