@@ -7,6 +7,8 @@
     (get-path (cdr cmds) p))))
 
 (define (navigate cmd)
+  (let ((x (string->number (string-copy cmd 1))))
+    (display x))
   (let ((d (string-copy cmd 0 1)))
     (if (string=? d "U")
       (display "up"))
