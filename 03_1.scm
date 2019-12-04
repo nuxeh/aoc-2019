@@ -1,10 +1,12 @@
-(define (get-path cmds p)
-  (if (null? (car cmds))
-    p
-    ((navigate (car cmds))
-    (display (cdr cmds))
-    (display " ")
-    (get-path (cdr cmds) p))))
+(use-modules (srfi srfi-1))
+
+;(define (get-path cmds p)
+;  (if (null? (car cmds))
+;    p
+;    ((navigate (car cmds))
+;    (display (cdr cmds))
+;    (display " ")
+;    (get-path (cdr cmds) p))))
 
 (define (navigate cmd)
   (let ((x (string->number (string-copy cmd 1))))
@@ -19,6 +21,11 @@
         (display "right"))
       (display x))))
 
+(define (walk cmd acc)
+  (display cmd)
+  (display acc)
+  (cons acc cmd))
+
 (let ((p1 (read)))
   (let ((p2 (read)))
     (let ((i (string-split (symbol->string p1) #\,)))
@@ -27,10 +34,10 @@
     (newline)
     (display j)
     (newline)
-    (let ((p/1 (get-path i (list))))
-    (let ((p/2 (get-path j (list))))
+    (let ((p/1 (fold walk (list) i)))
+;    (let ((p/2 (get-path j (list))))
       (display p/1)
-      (display p/2)
-    ))))))
+;      (display p/2)
+    )))))
 
 
