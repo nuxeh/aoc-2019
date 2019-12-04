@@ -12,12 +12,18 @@
 (define (two l i) #t
   )
 
+(define (exec l ins)
+  (if ((= (first ins) 1))
+    (one l ins)
+    (if ((= (first ins) 2))
+      (two l ins)))
+  )
+
 (define (run l pc)
   (let ((ins (get-ins l pc 0)))
     (if (list? ins)
       (exec l ins)
       l)))
-
 
 (define (get-ins l n c)
   (let-values (((head tail) (split-at l 4)))
