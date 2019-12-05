@@ -1,17 +1,6 @@
 (use-modules (srfi srfi-1))
 
-;(define (get-path cmds p)
-;  (if (null? (car cmds))
-;    p
-;    ((navigate (car cmds))
-;    (display (cdr cmds))
-;    (display " ")
-;    (get-path (cdr cmds) p))))
-
 (define (navigate cmd acc)
-;  (display "[")
-;  (display cmd)
-;  (display "] ")
   (let ((pos (last acc)))
     (let ((x (string->number (string-copy cmd 1))))
       (let ((d (string-copy cmd 0 1)))
@@ -27,12 +16,7 @@
         (if (string=? d "R")
           (do ((i 1 (1+ i))) ((> i x))
             (append! acc (list (cons (+ i (car pos)) (cdr pos))))))
-;        (display acc)
-;        (newline)
         acc))))
-
-;(define (walk cmd acc)
-;  (append acc (list (navigate cmd (last acc)))))
 
 ; manhattan distance from (0 . 0)
 (define (man c)
@@ -40,11 +24,9 @@
 
 (define (list-max lst)
 (reduce max 0 lst))
-;  (foldr max (first lst) (rest lst)))
 
 (define (list-min lst)
 (reduce min 0 lst))
-;  (foldr min (first lst) (rest lst)))
 
 (let ((p1 (read)))
   (let ((p2 (read)))
@@ -64,7 +46,6 @@
         (newline)
         (let ((d (map man c)))
           (display (list-min (cdr d))))
-          (newline)
-              )))))))
+          (newline))))))))
 
 
