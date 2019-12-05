@@ -51,9 +51,7 @@
         (let ((d (map man c)))
           (display (list-min (cdr d)))
           (newline))
-        (display c)
-        (newline)
-        (display (map (lambda (k) (steps k p/1 p/2)) (cdr c)))
+        (display (list-min (map (lambda (k) (steps k p/1 p/2)) (cdr c))))
       )))))))
 
 
