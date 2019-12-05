@@ -50,12 +50,15 @@
     (newline)
     (let ((p/1 (fold navigate (list (cons 0 0)) i)))
     (let ((p/2 (fold navigate (list (cons 0 0)) j)))
+      (newline)
       (display p/1)
+      (newline)
       (newline)
       (display p/2)
       (newline)
+      (newline)
 
-      (display (map dcol (zip p/1 p/2)))
+      (display (map (lambda (a) (member a p/2)) p/1))
     ))))))
 
 
