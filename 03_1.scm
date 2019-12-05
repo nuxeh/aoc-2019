@@ -28,6 +28,10 @@
 (define (list-min lst)
 (reduce min 0 lst))
 
+(define (steps c l1 l2)
+  (+ (list-index (lambda (e) (equal? e c)) l1)
+     (list-index (lambda (e) (equal? e c)) l2)))
+
 (let ((p1 (read)))
   (let ((p2 (read)))
     (let ((i (string-split (symbol->string p1) #\,)))
@@ -45,7 +49,11 @@
         (display " collisions")
         (newline)
         (let ((d (map man c)))
-          (display (list-min (cdr d))))
-          (newline))))))))
+          (display (list-min (cdr d)))
+          (newline))
+        (display c)
+        (newline)
+        (display (map (lambda (k) (steps k p/1 p/2)) (cdr c)))
+      )))))))
 
 
