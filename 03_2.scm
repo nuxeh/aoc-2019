@@ -33,4 +33,5 @@
       (display "Path B length: ")
       (display (length p/2))
       (newline)
+      (display (map (lambda (z) (eq? (car z) (cdr z))) (zip p/1 p/2)))
       ))))))
