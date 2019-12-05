@@ -78,8 +78,8 @@
           (newline)
           (newline)
           (display d)
-          (display (list-min (cdr d)))
-          (display (length d)))
+          (newline)
+          (display (list-min (cdr d))))
               )))))))
 
 
