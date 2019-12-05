@@ -6,6 +6,8 @@
 
 ;(define (recurse l p r) #t)
 
+(define target 19690720)
+
 ; +
 (define (one l i)
   (list-set! l (fourth i) (+ (list-ref l (second i)) (list-ref l (third i))))
@@ -44,6 +46,18 @@
 	  #f)
       head)))
 
+(define (find-target-inputs i t)
+  (do ((n 0 (1+ n))) ((> n 99))
+    (do ((v 0 (1+ v))) ((> v 99))
+      (let ((j (list-copy i)))
+	(list-set! j 1 n)
+	(list-set! j 2 v)
+;	(newline)
+      	(let ((res (run j 0)))
+;	  (display res)(display " -> ")(display (first res))
+	  (if (= (first res) t)
+	      ((display "> ")(display n)(display ", ")(display v))))))))
+
 (let ((x (read)))
   (let ((i (map string->number (string-split (symbol->string x) #\,))))
     (display i)
@@ -53,10 +67,14 @@
     (display (get-ins i 2 0))
     (display (get-ins i 3 0))
     (newline)
-    (let ((r (run i 0)))
-      (display r)
+    (let ((j (list-copy i)))
+      (let ((r (run j 0)))
+	(display r)
+	(newline)
+	(display (first r))))
+    (let ((j (list-copy i)))
       (newline)
-      (display (first r)))))
+      (find-target-inputs j target))))
 
     
 ;    (do ((j 0 (1+ j)))
