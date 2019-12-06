@@ -18,8 +18,6 @@
   (list-set! l (fourth i) (* (list-ref l (second i)) (list-ref l (third i))))
   l)
 
-(define ops (list one two))
-
 (define (exec l ins)
   (if (= (first ins) 1)
       (one l ins)
@@ -30,6 +28,8 @@
 
 (define (run l pc)
   (let ((ins (get-ins l pc 0)))
+    (display ins)
+    (newline)
     (if (list? ins)
         (let ((l2 (exec l ins)))
           (run l2 (+ pc 1)))
@@ -54,11 +54,10 @@
       (let ((j (list-copy i)))
         (list-set! j 1 n)
         (list-set! j 2 v)
-;       (newline)
         (let ((res (run j 0)))
-;         (display res)(display " -> ")(display (first res))
           (if (= (first res) t)
-              ((display "> ")(display n)(display ", ")(display v))))))))
+              ((display ">> ")(display n)(display ", ")(display v)
+               (newline))))))))
 
 (let ((x (read)))
   (let ((i (map string->number (string-split (symbol->string x) #\,))))
@@ -76,7 +75,8 @@
   (display (first r))))
     (let ((j (list-copy i)))
       (newline)
-      (find-target-inputs j target))))
+      (find-target-inputs j target)
+      )))
 
     
 ;    (do ((j 0 (1+ j)))
