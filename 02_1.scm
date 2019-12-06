@@ -18,13 +18,15 @@
   (list-set! l (fourth i) (* (list-ref l (second i)) (list-ref l (third i))))
   l)
 
+(define ops (list one two))
+
 (define (exec l ins)
   (if (= (first ins) 1)
-    (one l ins)
-    (if (= (first ins) 2)
-        (two l ins)
-        (if (= (first ins) 99)
-            l))))
+      (one l ins)
+      (if (= (first ins) 2)
+          (two l ins)
+          (if (= (first ins) 99)
+              l))))
 
 (define (run l pc)
   (let ((ins (get-ins l pc 0)))
