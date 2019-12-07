@@ -4,29 +4,29 @@
 ; +
 (define (MULT m i)
   (display "MULT")(newline)
-  (vector-set! m (fifth i) (+ (third i) (fourth i))))
+  (vector-set! m (third i) (* (fourth i) (fifth i))))
 
 ; *
 (define (ADD m i)
   (display "ADD")(newline)
-  (vector-set! m (fifth i) (* (third i) (fourth i))))
+  (vector-set! m (third i) (+ (fourth i) (fifth i))))
 
 ; set
 (define (SET m i)
   (let ((input (read)))
     (display (string-append "SET <" (number->string input) "> "))(newline)
-    (vector-set! m (third i) input)))
+    (vector-set! m (fourth i) input)))
 
 ; output
 (define (DISP m i)
-  (display (string-append "[" (number->string (third i)) "]"))(newline))
+  (display (string-append "[" (number->string (fourth i)) "]"))(newline))
 
 ; output
 (define (NULL m i)
   (display "NULL called"))
 
-; opcode vector          1    2   3   4
-(define ops (vector NULL MULT ADD SET DISP))
+; opcode vector          1   2    3   4
+(define ops (vector NULL ADD MULT SET DISP))
 (define opn #(0 4 4 2 2))
 
 (define (get-modes intcode)
@@ -44,15 +44,19 @@
   (define opl (if (eq? op 99)
                   1
                   (vector-ref opn op)))
-  (define l (list op opl 0 0 0))
+  (define l (list op opl 0 0 0 0))
   (do ((i 1 (1+ i))) ((>= i opl))
-    (if (< 1 (list-ref op-modes i))
-        (list-set! l (+ i 1) (vector-ref m (vector-ref m (+ ic i)))) ;position
-        (list-set! l (+ i 1) (vector-ref m (+ ic i))))               ;immediate
+    (display op-modes)
+    (if (eq? 1 (list-ref op-modes i))
+        (list-set! l (+ i 2) (vector-ref m (+ ic i)))                 ;immediate
+        (list-set! l (+ i 2) (vector-ref m (vector-ref m (+ ic i))))) ;position
+    (if (eq? i 3)
+        (list-set! l 2 (vector-ref m (+ ic i))))                      ;output
 ;    (display l)(display " ")(display (vector-ref m (+ ic i)))(newline))
-  )l)
+  )(display l)l)
 
 (define (exec m ic)
+  (display m)(newline)
   (let ((ins (get-ins m ic)))
     (let ((op (first ins)))
       (if (eq? op 99)
@@ -64,5 +68,5 @@
   (let ((i (map string->number (string-split (symbol->string x) #\,))))
     (let ((mem (list->vector i)))
       (display mem)(newline)
-      (display ops)(newline)
-      (exec mem 0))))
+      (exec mem 0)
+      (newline)(display (vector-ref mem 0))(display mem))))
