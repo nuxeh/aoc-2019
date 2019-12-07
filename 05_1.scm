@@ -3,27 +3,29 @@
 
 ; +
 (define (MULT m i)
-  (display "MULT"))
-;  (vector-set! m (fourth i) (+ (vector-ref m (second i)) (vector-ref m (third i)))))
+  (display "MULT")(newline)
+  (vector-set! m (fifth i) (+ (third i) (fourth i))))
 
 ; *
 (define (ADD m i)
-  (display "ADD"))
-;  (vector-set! m (fourth i) (* (vector-ref m (second i)) (vector-ref m (third i)))))
+  (display "ADD")(newline)
+  (vector-set! m (fifth i) (* (third i) (fourth i))))
 
 ; set
 (define (SET m i)
-  (display "SET"))
+  (let ((input (read)))
+    (display (string-append "SET <" (number->string input) "> "))(newline)
+    (vector-set! m (third i) input)))
 
 ; output
 (define (DISP m i)
-  (display (string-append "[" (second i) "]")))
+  (display (string-append "[" (number->string (third i)) "]"))(newline))
 
 ; output
 (define (NULL m i)
   (display "NULL called"))
 
-; opcode vector
+; opcode vector          1    2   3   4
 (define ops (vector NULL MULT ADD SET DISP))
 (define opn #(0 4 4 2 2))
 
@@ -34,12 +36,7 @@
       (set! intcode (- intcode (* B 1000)))
       (let ((A (floor (/ intcode 100))))
         (set! intcode (- intcode (* A 100)))
-  (display intcode)(newline)
-  (display C)(newline)
-  (display B)(newline)
-  (display A)(newline)
-  (display intcode)(newline)
-  (list intcode C B A))))) 
+        (list intcode C B A)))))
 
 (define (get-ins m ic)
   (define op-modes (get-modes (vector-ref m ic)))
@@ -52,8 +49,8 @@
     (if (< 1 (list-ref op-modes i))
         (list-set! l (+ i 1) (vector-ref m (vector-ref m (+ ic i)))) ;position
         (list-set! l (+ i 1) (vector-ref m (+ ic i))))               ;immediate
-    (display l)(display " ")(display (vector-ref m (+ ic i)))(newline))
-  l)
+;    (display l)(display " ")(display (vector-ref m (+ ic i)))(newline))
+  )l)
 
 (define (exec m ic)
   (let ((ins (get-ins m ic)))
