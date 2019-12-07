@@ -15,7 +15,7 @@
 (define (SET m i)
   (let ((input (read)))
     (display (string-append "SET <" (number->string input) "> "))(newline)
-    (vector-set! m (fourth i) input)))
+    (vector-set! m (third i) input)))
 
 ; output
 (define (DISP m i)
@@ -49,7 +49,7 @@
     (if (eq? 1 (list-ref op-modes i))
         (list-set! l (+ i 2) (vector-ref m (+ ic i)))                 ;immediate
         (list-set! l (+ i 2) (vector-ref m (vector-ref m (+ ic i))))) ;position
-    (if (eq? i 3)
+    (if (eq? i (- opl 1))
         (list-set! l 2 (vector-ref m (+ ic i)))))                     ;output
   (display l)l)
 
