@@ -44,7 +44,9 @@
 (define (get-ins m ic)
   (define op-modes (get-modes (vector-ref m ic)))
   (define op (first op-modes))
-  (define opl (vector-ref opn op))
+  (define opl (if (eq? op 99)
+                  1
+                  (vector-ref opn op)))
   (define l (list op opl 0 0 0))
   (do ((i 1 (1+ i))) ((>= i opl))
     (if (< 1 (list-ref op-modes i))
