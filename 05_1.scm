@@ -30,8 +30,8 @@
 (define (get-modes intcode)
   #t)
 
-(define (get-ins m ic)
-  (define count (vector-ref opl (vector-ref m ic)))
+(define (get-ins m op ic)
+  (define count (vector-ref opl op))
   (define l (list count 0 0 0))
   (do ((i 1 (1+ i))) ((>= i count))
     (list-set! l i (vector-ref m (+ ic i)))
@@ -39,11 +39,11 @@
   l)
 
 (define (exec m ic)
-  (let ((opcode (vector-ref m ic)))
-    (if (eq? opcode 99)
+  (let ((op (vector-ref m ic)))
+    (if (eq? op 99)
         #t
-        (let ((i (get-ins m ic)))
-          ((vector-ref ops opcode) m i)
+        (let ((i (get-ins m op ic)))
+          ((vector-ref ops op) m (cdr i))
           (exec m (+ ic (list-ref i 0)))))))
 
 (let ((x (read)))
