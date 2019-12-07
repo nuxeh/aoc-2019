@@ -23,7 +23,7 @@
 
 ; output
 (define (NULL m i)
-  (display "NULL called"))
+  (display "NULL\n"))
 
 ; opcode vector          1   2    3   4
 (define ops (vector NULL ADD MULT SET DISP))
@@ -46,17 +46,14 @@
                   (vector-ref opn op)))
   (define l (list op opl 0 0 0 0))
   (do ((i 1 (1+ i))) ((>= i opl))
-    (display op-modes)
     (if (eq? 1 (list-ref op-modes i))
         (list-set! l (+ i 2) (vector-ref m (+ ic i)))                 ;immediate
         (list-set! l (+ i 2) (vector-ref m (vector-ref m (+ ic i))))) ;position
     (if (eq? i 3)
-        (list-set! l 2 (vector-ref m (+ ic i))))                      ;output
-;    (display l)(display " ")(display (vector-ref m (+ ic i)))(newline))
-  )(display l)l)
+        (list-set! l 2 (vector-ref m (+ ic i)))))                     ;output
+  (display l)l)
 
 (define (exec m ic)
-  (display m)(newline)
   (let ((ins (get-ins m ic)))
     (let ((op (first ins)))
       (if (eq? op 99)
@@ -69,4 +66,4 @@
     (let ((mem (list->vector i)))
       (display mem)(newline)
       (exec mem 0)
-      (newline)(display (vector-ref mem 0))(display mem))))
+      (newline)(display (vector-ref mem 0)))))
