@@ -3,38 +3,40 @@
 
 ; +
 (define (MULT m i)
-  (display "1")
-  (vector-set! m (fourth i) (+ (vector-ref m (second i)) (vector-ref m (third i)))))
-(define (MULT' m i)
-  (vector-set! m (fourth i) (+ (vector-ref m (second i)) (vector-ref m (third i)))))
+  (display "1"))
+;  (vector-set! m (fourth i) (+ (vector-ref m (second i)) (vector-ref m (third i)))))
 
 ; *
 (define (ADD m i)
-  (display "2")
-  (vector-set! m (fourth i) (* (vector-ref m (second i)) (vector-ref m (third i)))))
+  (display "2"))
+;  (vector-set! m (fourth i) (* (vector-ref m (second i)) (vector-ref m (third i)))))
 
 ; set
-(define (SET m i)#t)
+(define (SET m i)
+  (display "3"))
 
 ; output
 (define (DISP m i)
-  (display (string-append "["  "]")))
+  (display (string-append "[" (second i) "]")))
 
 ; opcode vector
 (define ops #(MULT ADD SET DISP))
-(define ops' #(one' two' three' four'))
 (define opl #(4 4 2 2))
 
 (define (get-modes m ic)#t)
 
 (define (get-ins m ic)
-  (let ((l (list)))
-    (do ((i 1 (1+ i))) ((> i 4))
-      (display i)
-      (append l (vector-ref m (+ ic i))))l))
+  (let ((l '()))
+    (do ((i 0 (1+ i))) ((>= i (vector-ref opl (vector-ref m ic))))
+      (display l)(display " ")(display (vector-ref m (+ ic i)))
+      (append l (list (vector-ref m (+ ic i))))
+      (display l))
+    l))
 
 (define (exec m ic)
   (let ((opcode (vector-ref m ic)))
+    (display opcode)
+    (newline)
     (exec m (+ ic ((vector-ref ops opcode) m (get-ins m ic) ic)))))
 
 (let ((x (read)))
