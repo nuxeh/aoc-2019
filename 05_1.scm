@@ -28,23 +28,36 @@
 (define opl #(0 4 4 2 2))
 
 (define (get-modes intcode)
-  #t)
+  (define C (floor (/ intcode 10000)))
+  (define B (floor (/ intcode 1000)))
+  (define A (floor (/ intcode 100)))
+  (define op (- intcode (* A 100) (* B 1000) (* C 10000)))
+  (display intcode)(newline)
+  (display (* C 10000))(newline)
+  (display (* B 1000))(newline)
+  (display (* A 100))(newline)
+  (display op)(newline)
+  (list op C B A)) 
 
-(define (get-ins m op ic)
-  (define count (vector-ref opl op))
-  (define l (list count 0 0 0))
+(define (get-ins m ic)
+  (define op-modes (get-modes (vector-ref m ic)))
+  (define op (first op-modes))
+  (define opl (vector-ref opl op))
+  (define l (list op opl 0 0 0))
   (do ((i 1 (1+ i))) ((>= i count))
-    (list-set! l i (vector-ref m (+ ic i)))
+    (if (< 1 (list-ref op-modes i))
+        (list-set! l (+ i 1) (vector-ref m (vector-ref m (+ ic i)))) ;position
+        (list-set! l (+ i 1) (vector-ref m (+ ic i))))               ;immediate
     (display l)(display " ")(display (vector-ref m (+ ic i)))(newline))
   l)
 
 (define (exec m ic)
-  (let ((op (vector-ref m ic)))
-    (if (eq? op 99)
-        #t
-        (let ((i (get-ins m op ic)))
-          ((vector-ref ops op) m (cdr i))
-          (exec m (+ ic (list-ref i 0)))))))
+  (let ((ins (get-ins m ic)))
+    (let ((op (first ins)))
+      (if (eq? op 99)
+          #t
+          (begin ((vector-ref ops op) m ins)
+            (exec m (+ ic (second ins))))))))
 
 (let ((x (read)))
   (let ((i (map string->number (string-split (symbol->string x) #\,))))
