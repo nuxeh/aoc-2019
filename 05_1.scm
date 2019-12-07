@@ -20,7 +20,7 @@
   (display (string-append "[" (second i) "]")))
 
 ; opcode vector
-(define ops #(,MULT ,ADD ,SET ,DISP))
+(define ops (vector MULT ADD SET DISP))
 (define opl #(4 4 2 2))
 
 (define (get-modes m ic)#t)
@@ -37,14 +37,14 @@
 (define (exec m ic)
   (let ((opcode (vector-ref m ic)))
     (define i (get-ins m ic))
-    (display (vector-ref ops opcode) m i)
+    ((vector-ref ops opcode) m i)
     (display opcode)
     (newline)
-    (exec m (+ ic (vector-ref i 0)))))
+    (exec m (+ ic (list-ref i 0)))))
 
 (let ((x (read)))
   (let ((i (map string->number (string-split (symbol->string x) #\,))))
     (let ((mem (list->vector i)))
-      (display mem)
-      (display ops)
+      (display mem)(newline)
+      (display ops)(newline)
       (exec mem 0))))
