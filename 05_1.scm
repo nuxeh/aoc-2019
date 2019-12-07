@@ -32,8 +32,7 @@
 
 (define (get-ins m ic)
   (define count (vector-ref opl (vector-ref m ic)))
-  (define l (list 0 0 0 0))
-  (list-set! l 0 count)
+  (define l (list count 0 0 0))
   (do ((i 1 (1+ i))) ((>= i count))
     (list-set! l i (vector-ref m (+ ic i)))
     (display l)(display " ")(display (vector-ref m (+ ic i)))(newline))
