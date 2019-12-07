@@ -26,12 +26,11 @@
 (define (get-modes m ic)#t)
 
 (define (get-ins m ic)
-  (let ((l '(0 0 0 0)))
-    (do ((i 0 (1+ i))) ((>= i (vector-ref opl (vector-ref m ic))))
-      (display l)(display " ")(display (vector-ref m (+ ic i)))
-      (list-set! l i (list (vector-ref m (+ ic i))))
-      (display l))
-    l))
+  (define l (list 0 0 0 0))
+  (do ((i 0 (1+ i))) ((>= i (vector-ref opl (vector-ref m ic))))
+    (list-set! l i (vector-ref m (+ ic i)))
+    (display l)(display " ")(display (vector-ref m (+ ic i)))(newline))
+  l)
 
 (define (exec m ic)
   (let ((opcode (vector-ref m ic)))
