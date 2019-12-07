@@ -3,27 +3,32 @@
 
 ; +
 (define (MULT m i)
-  (display "1"))
+  (display "MULT"))
 ;  (vector-set! m (fourth i) (+ (vector-ref m (second i)) (vector-ref m (third i)))))
 
 ; *
 (define (ADD m i)
-  (display "2"))
+  (display "ADD"))
 ;  (vector-set! m (fourth i) (* (vector-ref m (second i)) (vector-ref m (third i)))))
 
 ; set
 (define (SET m i)
-  (display "3"))
+  (display "SET"))
 
 ; output
 (define (DISP m i)
   (display (string-append "[" (second i) "]")))
 
-; opcode vector
-(define ops (vector MULT ADD SET DISP))
-(define opl #(4 4 2 2))
+; output
+(define (NULL m i)
+  (display "NULL called"))
 
-(define (get-modes m ic)#t)
+; opcode vector
+(define ops (vector NULL MULT ADD SET DISP))
+(define opl #(0 4 4 2 2))
+
+(define (get-modes intcode)
+  #t)
 
 (define (get-ins m ic)
   (define count (vector-ref opl (vector-ref m ic)))
@@ -36,11 +41,11 @@
 
 (define (exec m ic)
   (let ((opcode (vector-ref m ic)))
-    (define i (get-ins m ic))
-    ((vector-ref ops opcode) m i)
-    (display opcode)
-    (newline)
-    (exec m (+ ic (list-ref i 0)))))
+    (if (eq? opcode 99)
+        #t
+        (let ((i (get-ins m ic)))
+          ((vector-ref ops opcode) m i)
+          (exec m (+ ic (list-ref i 0)))))))
 
 (let ((x (read)))
   (let ((i (map string->number (string-split (symbol->string x) #\,))))
