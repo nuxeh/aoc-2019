@@ -3,18 +3,22 @@
 ; recurse backwards from node
 (define (build-tree orbs name d)
   (let ((cs (filter (lambda (o) (equal? (second o) name)) orbs)))
-    (display name)(newline)
-    (display cs)(newline)
-    (display d)(newline)
     (if (eq? (length cs) 0)
         d
         (let ((p (first cs)))
-          (display (first p))
           (build-tree orbs (first p) (append d (list name)))))))
 
 (define (get-inter-santa-dist orbs)
-  (display (build-tree orbs "SAN" '()))
-  (map display (build-tree orbs "YOU" '())))
+  (define s (build-tree orbs "SAN" '()))
+  (define y (build-tree orbs "YOU" '()))
+  (define com (filter (lambda (o) (member o s)) y))
+  (define sx (list-index (lambda (o) (equal? o (first com))) s))
+  (define yx (list-index (lambda (o) (equal? o (first com))) y))
+  (display s)(newline)(display y)(newline)
+  (display "common: ")(display com)(newline)
+  (display "santa's steps: ")(display sx)(newline)
+  (display "your steps: ")(display yx)(newline)
+  (display (- (+ sx yx) 2)))
 
 (define (get-orbits)
   (let ((o '()))
