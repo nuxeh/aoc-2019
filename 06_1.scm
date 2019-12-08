@@ -2,10 +2,10 @@
 
 (define (build-tree orbs name d)
   (let ((cs (filter (lambda (o) (equal? (car o) name)) orbs)))
-    (display cs)
-    (for-each (lambda (o) (display (second o))(display " ")) cs)
-    (display " ")(display d)
-    (newline)
+    (if (equal? name "SAN")
+        (display (string-append "SAN: " (number->string d) "\n")) )
+    (if (equal? name "YOU")
+        (display (string-append "YOU: " (number->string d) "\n")) )
     (if (eq? (length cs) 0)
         d
         (fold + d (map (lambda (c) (build-tree orbs (second c) (1+ d))) cs)))))
