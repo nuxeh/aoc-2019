@@ -1,8 +1,11 @@
 (use-modules (srfi srfi-1))
 
-(define (build-tree orbits name)
+(define (build-tree orbits name depth)
   (let ((child (filter (lambda (o) (equal? (car o) name)) orbits)))
-    (display child)))
+    (display child)
+    (if (eq? (length child) 0)
+        depth
+        (fold + 0 (map (lambda (o) (build-tree orbits o depth)) orbits)))))
 
 (define (get-orbits)
   (let ((o '()))
@@ -12,6 +15,6 @@
     o))
 
 (let ((orbits (get-orbits)))
-  (display orbits)
-  (build-tree orbits "COM"))
+  (display orbits)(newline)
+  (display (build-tree orbits "COM" 0)))
 
