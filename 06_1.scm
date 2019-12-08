@@ -1,7 +1,7 @@
 (use-modules (srfi srfi-1))
 
 (define (build-tree orbits name)
-  (let ((child (fold (lambda (o, a) (eq? (car o) name)) orbits)))
+  (let ((child (filter (lambda (o) (equal? (car o) name)) orbits)))
     (display child)))
 
 (define (get-orbits)
