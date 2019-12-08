@@ -45,7 +45,9 @@
                   1
                   (vector-ref opn op)))
   (define l (list op opl 0 0 0 0))
+  (display op)(display " ")(display op-modes)
   (do ((i 1 (1+ i))) ((>= i opl))
+    (display i)
     (if (eq? 1 (list-ref op-modes i))
         (list-set! l (+ i 2) (vector-ref m (+ ic i)))                 ;immediate
         (list-set! l (+ i 2) (vector-ref m (vector-ref m (+ ic i))))) ;position
