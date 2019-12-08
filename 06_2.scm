@@ -1,6 +1,6 @@
 (use-modules (srfi srfi-1))
 
-;recurse backwards from node
+; recurse backwards from node
 (define (build-tree orbs name d)
   (let ((cs (filter (lambda (o) (equal? (second o) name)) orbs)))
     (display name)(newline)
@@ -8,7 +8,9 @@
     (display d)(newline)
     (if (eq? (length cs) 0)
         d
-        (map (lambda (c) (build-tree orbs (first c) (append d (list name)))) cs))))
+        (let ((p (first cs)))
+          (display (first p))
+          (build-tree orbs (first p) (append d (list name)))))))
 
 (define (get-inter-santa-dist orbs)
   (display (build-tree orbs "SAN" '()))
