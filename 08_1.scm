@@ -11,15 +11,16 @@
       (+ acc 1)
       acc))
 
-(define (image-chunk imgdata w h res)
+(define (checksum imgdata w h res)
   (let-values (((head tail) (split-at imgdata (* w h))))
+    (display head)
     (let ((n0 (fold (lambda (p a) (count-n 0 p a)) 0 head)))
       (let ((n1 (fold (lambda (p a) (count-n 1 p a)) 0 head)))
         (let ((n2 (fold (lambda (p a) (count-n 2 p a)) 0 head)))
           (set! res (append res (list (list n0 (* n1 n2))))))))
     (if (null? tail)
         res
-        (image-chunk tail w h res))))
+        (checksum tail w h res))))
 
 (define (char->number a)
   (string->number (string a)))
@@ -32,5 +33,5 @@
           acc)))
 
 (let ((idata (map char->number (string->list (read)))))
-  (let ((csums (image-chunk idata w h '())))
+  (let ((csums (checksum idata w h '())))
     (display (fold smallest-sum '() csums))))
