@@ -38,11 +38,14 @@
         res
         (get-layers tail w h res))))
 
-(define (superimpose layer pr)
-  (display layer)(display pr)(newline)layer)
+(define (pixel-superimpose pxls)
+  (display pxls)
+  (first pxls))
 
-(define (image-combine imgdata res)
-  (fold-right superimpose '() imgdata))
+(define (layer-combine layer pr)
+  (display layer)(display pr)(newline)
+  (display (zip layer pr))
+  (map pixel-superimpose (zip layer pr)))
 
 (define (image-display imgdata w h)#t)
 
@@ -52,4 +55,4 @@
     (display (fold smallest-sum '() csums))(newline)) ;part 1
   (let ((layers (get-layers idata w h '())))
     (display layers)(newline)
-    (image-combine layers '())))
+    (fold-right layer-combine (make-list (* w h) 0) layers)))
