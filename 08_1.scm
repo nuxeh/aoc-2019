@@ -6,15 +6,15 @@
 (display (string-append "w: " (number->string w) "\n"))
 (display (string-append "h: " (number->string h) "\n"))
 
-(define (count-zeroes l acc)
-  (if (eq? l 0)
+(define (count-n n p acc)
+  (if (eq? p n)
       (+ acc 1)
       acc))
 
 (define (image-chunk imgdata w h)
   (let-values (((head tail) (split-at imgdata (* w h))))
     (display head)
-    (let ((nz (fold count-zeroes 0 head)))
+    (let ((nz (fold (lambda (p a) (count-n 0 p a)) 0 head)))
       (display nz))
     (if (null? tail)
         #t
