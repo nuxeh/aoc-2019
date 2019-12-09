@@ -40,7 +40,9 @@
 
 (define (pixel-superimpose pxls)
   (display pxls)(newline)
-  (first pxls))
+  (if (eq? (first pxls) 2)
+      (second pxls)
+      (first pxls)))
 
 (define (layer-combine layer pr)
   (map pixel-superimpose (zip layer pr)))
