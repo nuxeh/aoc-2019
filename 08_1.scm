@@ -39,7 +39,6 @@
         (get-layers tail w h res))))
 
 (define (pixel-superimpose pxls)
-  (display pxls)(newline)
   (if (eq? (first pxls) 2)
       (second pxls)
       (first pxls)))
@@ -47,9 +46,14 @@
 (define (layer-combine layer pr)
   (map pixel-superimpose (zip layer pr)))
 
+(define (display-px px)
+  (if (eq? px 1)
+      (display "#")
+      (display " ")))
+
 (define (image-display imgdata w)
   (let-values (((head tail) (split-at imgdata w)))
-    (map display head)(newline)
+    (map display-px head)(newline)
     (if (null? tail)
         #t
         (image-display tail w))))
@@ -59,9 +63,8 @@
   (let ((csums (checksum idata w h '())))
     (display (fold smallest-sum '() csums))(newline)) ;part 1
   (let ((layers (get-layers idata w h '())))
-    (display layers)(newline)
     (let ((img (fold-right layer-combine (make-list (* w h) 0) layers)))
-      (image-display img w))))
+      (image-display img w)))) ;part 2
 
 ;input piped to this script on stdin
 ;input format:
