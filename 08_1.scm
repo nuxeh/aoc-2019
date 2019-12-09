@@ -8,9 +8,11 @@
 
 (define (image-chunk imgdata w h)
   (let-values (((head tail) (split-at imgdata (* w h))))
-    (display head)(display tail)))
+    (display head)
+    (if (null? tail)
+        #t
+        (image-chunk tail w h))))
 
 
 (let ((idata (string->list (number->string (read )))))
-  (display idata)
   (image-chunk idata w h))
