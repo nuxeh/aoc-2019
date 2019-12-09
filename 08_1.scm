@@ -32,6 +32,10 @@
           r
           acc)))
 
+(define (image-combine imgdata w h res)#t)
+
+(define (image-display imgdata w h)#t)
+
 (let ((idata (map char->number (string->list (read)))))
   (let ((csums (checksum idata w h '())))
     (display (fold smallest-sum '() csums))))
