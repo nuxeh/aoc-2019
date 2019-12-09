@@ -1,3 +1,6 @@
+#!/usr/bin/guile -s
+!#
+
 (use-modules (srfi srfi-1))  ;split-at,map,fold,etc
 (use-modules (srfi srfi-11)) ;let-values
 
