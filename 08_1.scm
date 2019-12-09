@@ -13,7 +13,6 @@
 
 (define (checksum imgdata w h res)
   (let-values (((head tail) (split-at imgdata (* w h))))
-    (display head)
     (let ((n0 (fold (lambda (p a) (count-n 0 p a)) 0 head)))
       (let ((n1 (fold (lambda (p a) (count-n 1 p a)) 0 head)))
         (let ((n2 (fold (lambda (p a) (count-n 2 p a)) 0 head)))
@@ -32,10 +31,25 @@
           r
           acc)))
 
-(define (image-combine imgdata w h res)#t)
+(define (get-layers imgdata w h res)
+  (let-values (((head tail) (split-at imgdata (* w h))))
+    (set! res (append res (list head)))
+    (if (null? tail)
+        res
+        (get-layers tail w h res))))
+
+(define (superimpose layer pr)
+  (display layer)(display pr)(newline)layer)
+
+(define (image-combine imgdata res)
+  (fold-right superimpose '() imgdata))
 
 (define (image-display imgdata w h)#t)
 
+;get input and run
 (let ((idata (map char->number (string->list (read)))))
   (let ((csums (checksum idata w h '())))
-    (display (fold smallest-sum '() csums))))
+    (display (fold smallest-sum '() csums))(newline)) ;part 1
+  (let ((layers (get-layers idata w h '())))
+    (display layers)(newline)
+    (image-combine layers '())))
