@@ -47,7 +47,12 @@
 (define (layer-combine layer pr)
   (map pixel-superimpose (zip layer pr)))
 
-(define (image-display imgdata w h)#t)
+(define (image-display imgdata w)
+  (let-values (((head tail) (split-at imgdata w)))
+    (map display head)(newline)
+    (if (null? tail)
+        #t
+        (image-display tail w))))
 
 ;get input and run
 (let ((idata (map char->number (string->list (read)))))
