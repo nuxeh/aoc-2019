@@ -31,6 +31,6 @@
           r
           acc)))
 
-(let ((idata (map char->number (string->list (number->string (read ))))))
+(let ((idata (map char->number (string->list (read)))))
   (let ((csums (image-chunk idata w h '())))
     (display (fold smallest-sum '() csums))))
