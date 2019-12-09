@@ -56,4 +56,11 @@
   (let ((layers (get-layers idata w h '())))
     (display layers)(newline)
     (let ((img (fold-right layer-combine (make-list (* w h) 0) layers)))
-      (display img))))
+      (image-display img w))))
+
+;input piped to this script on stdin
+;input format:
+;w
+;h
+;"<data>"
+;i.e.: width and height given on first two lines, followed by data, quoted.
