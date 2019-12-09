@@ -48,7 +48,7 @@
 
 (define (display-px px)
   (if (eq? px 1)
-      (display "#")
+      (display "█")
       (display " ")))
 
 (define (image-display imgdata w)
