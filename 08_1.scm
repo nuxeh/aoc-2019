@@ -11,19 +11,18 @@
       (+ acc 1)
       acc))
 
-(define (image-chunk imgdata w h)
+(define (image-chunk imgdata w h res)
   (let-values (((head tail) (split-at imgdata (* w h))))
     (display head)
     (let ((n0 (fold (lambda (p a) (count-n 0 p a)) 0 head)))
       (let ((n1 (fold (lambda (p a) (count-n 1 p a)) 0 head)))
         (let ((n2 (fold (lambda (p a) (count-n 2 p a)) 0 head)))
-          (display n0)(newline)(display n1)(newline)(display n2))))
-    (if (null? tail)
-        #t
-        (image-chunk tail w h))))
+          (if (null? tail)
+              res
+              (image-chunk tail w h (append res (list n0 (* n1 n2))))))))))
 
 (define (char->number a)
   (string->number (string a)))
 
 (let ((idata (map char->number (string->list (number->string (read ))))))
-  (image-chunk idata w h))
+  (display (image-chunk idata w h '())))
