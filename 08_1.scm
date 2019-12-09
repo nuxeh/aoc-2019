@@ -14,8 +14,10 @@
 (define (image-chunk imgdata w h)
   (let-values (((head tail) (split-at imgdata (* w h))))
     (display head)
-    (let ((nz (fold (lambda (p a) (count-n 0 p a)) 0 head)))
-      (display nz))
+    (let ((n0 (fold (lambda (p a) (count-n 0 p a)) 0 head)))
+      (let ((n1 (fold (lambda (p a) (count-n 1 p a)) 0 head)))
+        (let ((n2 (fold (lambda (p a) (count-n 2 p a)) 0 head)))
+          (display n0)(newline)(display n1)(newline)(display n2))))
     (if (null? tail)
         #t
         (image-chunk tail w h))))
