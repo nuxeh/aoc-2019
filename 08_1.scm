@@ -13,7 +13,6 @@
 
 (define (image-chunk imgdata w h res)
   (let-values (((head tail) (split-at imgdata (* w h))))
-    (display head)
     (let ((n0 (fold (lambda (p a) (count-n 0 p a)) 0 head)))
       (let ((n1 (fold (lambda (p a) (count-n 1 p a)) 0 head)))
         (let ((n2 (fold (lambda (p a) (count-n 2 p a)) 0 head)))
@@ -25,5 +24,13 @@
 (define (char->number a)
   (string->number (string a)))
 
+(define (smallest-sum r acc)
+  (if (null? acc)
+      r
+      (if (< (first r) (first acc))
+          r
+          acc)))
+
 (let ((idata (map char->number (string->list (number->string (read ))))))
-  (display (image-chunk idata w h '())))
+  (let ((csums (image-chunk idata w h '())))
+    (display (fold smallest-sum '() csums))))
