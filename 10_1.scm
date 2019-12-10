@@ -14,13 +14,14 @@
 
 (define (detect-dir dir field l a n det)
   (define offset (abs (- a n)))
-  (if (fold (lambda (d a) is-new d offset a) #t det)
+  (if (fold (lambda (d acc) is-new d offset acc) #t det)
       (set! det (append det (list offset))))
+  (display n)
   (if dir
-      (if (> 0 n)
+      (if (> n 0)
           (detect-dir #t field l a (1- n) det) ;left
           det)
-      (if (< l n)
+      (if (< n l)
           (detect-dir #f field l a (1+ n) det) ;right
           det)))
 
@@ -35,7 +36,7 @@
   (define n 0)
   (map (lambda (d)
          (let ((d (detect field l n)))
-           (set! n (+1 n))
+           (set! n (1+ n))
            d))
        detections))
 
