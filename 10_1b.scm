@@ -3,6 +3,32 @@
 
 (define w 0)
 
+(define (unit-vector v)
+  (define y (first v))
+  (define x (second v))
+  (define l (sqrt (+ (* x x) (* y y))))
+  (list (/ x l) (/ y l)))
+
+(define (is-line-of-sight a1 a2)
+  (define uv1 (unit-vector a1))
+  (define uv2 (unit-vector a2))
+  (and (< (abs (- (first uv1) (first uv2))) 0.00001)
+       (< (abs (- (second uv1) (second uv2))) 0.00001)))
+
+(define (get-vec v1 v2)
+  (list (- (first v1) (first v2)) (- (second v1) (second v2))))
+
+(define (det ast alist)
+  (define det '())
+  (define vecs (map (lambda (a) (get-vec ast a)) alist))
+
+  ;(fold (lambda (a acc) ()) '() vecs)
+
+  (length det))
+
+(define (detect asteroids)
+  (map (lambda (a) (det a asteroids)) asteroids))
+
 (define (find-asteroids c acc n)
   (define x (modulo n w))
   (define y (floor (/ n w)))
@@ -23,4 +49,4 @@
       (set! w (string-length c))
       (set! s (string-append s c)))
   (let ((l (string->list s)))
-    (display (asteroids l))))
+    (display (detect (asteroids l)))))
