@@ -21,16 +21,11 @@
   (list (- (first v1) (first v2)) (- (second v1) (second v2))))
 
 (define (check d v res)
-  (display d)(newline)
-  (display v)(newline)
-  (display res)(newline)
   (if (is-line-of-sight v d)
       #t
       res))
 
 (define (detected v det)
-  (display "det ")(display det)(newline)
-  (display "v   ")(display v)(newline)(newline)
   (if (fold (lambda (d r) (check d v r)) #f det)
       det
       (append det (list v))))
@@ -38,8 +33,8 @@
 (define (det ast alist)
   (define det '())
   (define vecs (map (lambda (a) (get-vec ast a)) alist))
-  (display vecs)
-  (length (fold detected '() vecs)))
+  (display vecs)(newline)
+  (1- (length (fold detected '() vecs))))
 
 (define (detect asteroids)
   (map (lambda (a) (det a asteroids)) asteroids))
