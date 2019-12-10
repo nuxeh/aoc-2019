@@ -3,9 +3,12 @@
 
 ;recurse fanning out in both directions from n
 (define (detect field len n)
-  (define l (length (detect-dir #t field len n (1- n) '())))
-  (define r (length (detect-dir #f field len n (1+ n) '())))
-  (+ l r))
+  (if (bitvector-ref field n)
+      (begin
+        (let ((l (length (detect-dir #t field len n (1- n) '()))))
+          (let ((r (length (detect-dir #f field len n (1+ n) '()))))
+            (+ l r))))
+      0))
 
 (define (is-new det off acc)
   (if (eq? 0 (modulo off det))
@@ -37,6 +40,7 @@
   (define detections (make-list l 0))
   (define n 0)
   (map (lambda (d)
+         (display "--------")(display n)(newline)
          (let ((d (detect field l n)))
            (set! n (1+ n))
            d))
