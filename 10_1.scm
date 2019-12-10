@@ -11,6 +11,8 @@
       0))
 
 (define (is-new det off acc)
+  (display det)(newline)
+  (display off)(newline)
   (if (eq? 0 (modulo off det))
       (set! acc #f))
   acc)
@@ -21,7 +23,7 @@
       (if (< n l)
           (begin
             (if (bitvector-ref field n)
-                (if (fold (lambda (d acc) is-new d offset acc) #t det)
+                (if (fold (lambda (d acc) (is-new d offset acc)) #t det)
                     (set! det (append det (list offset)))))
             (display n)(display det)(newline)
             (if dir
