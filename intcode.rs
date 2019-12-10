@@ -36,9 +36,7 @@ impl Intcode {
                   InputParam {value: 0, mode: ParamMode::Position},
                   OutputParam {value: 0})
     }
-}
 
-impl Intcode {
     fn len(&self) -> usize {
         match self {
             Self::ADD(_, _, _) => 4,
@@ -47,16 +45,16 @@ impl Intcode {
             Self::DISP(_) => 2,
         }
     }
-}
 
-fn parse_op(mut intcode: i16) -> [i16; 4] {
-  let c = intcode / 10000;
-  intcode -= c * 10000;
-  let b = intcode / 1000;
-  intcode -= b * 1000;
-  let a = intcode / 100;
-  intcode -= a * 100;
-  [intcode, c, b, a]
+    fn get_op_modes(mut intcode: i16) -> [i16; 4] {
+        let c = intcode / 10000;
+        intcode -= c * 10000;
+        let b = intcode / 1000;
+        intcode -= b * 1000;
+        let a = intcode / 100;
+        intcode -= a * 100;
+        [intcode, c, b, a]
+    }
 }
 
 pub fn read(path: impl AsRef<Path>) -> Result<Vec<i16>, Box<dyn Error>> {
