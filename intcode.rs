@@ -1,3 +1,7 @@
+use std::fs;
+use std::path::Path;
+use std::error::Error;
+
 enum ParamMode {
     Immediate,
     Position,
@@ -40,4 +44,12 @@ fn get_modes(mut intcode: i16) -> [i16; 4] {
   let a = intcode / 100;
   intcode -= a * 100;
   [intcode, c, b, a]
+}
+
+pub fn read(path: impl AsRef<Path>) -> Result<Vec<i16>, Box<dyn Error>> {
+    let v: Vec<i16> = fs::read_to_string(path)?
+        .split(",")
+        .map(|c| c.parse().unwrap_or(0))
+        .collect::<Vec<i16>>();
+    Ok(v)
 }
