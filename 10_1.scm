@@ -48,12 +48,19 @@
   acc)
 
 (define (2d-off off)
-  (let ((rows (floor (/ off w))))
-    (list rows (- off (* w rows)))))
+  (define off2 off)
+  (if (< off 0)
+      (set! off2 (- off)))
+  (let ((rows (floor (/ off2 w))))
+    (display rows)(newline)(display w)(newline)(display off2)(newline)
+  (if (< off 0)
+    (list (- rows) (- (- off2 (* w rows)))))
+    (list rows (- off2 (* w rows)))))
 
 (define (detect-dir dir field l a n det)
   (define off (- n a))
   (define vec (2d-off off))
+  (display ">")(display vec)(newline)
   (if (>= n 0)
       (if (< n l)
           (begin
