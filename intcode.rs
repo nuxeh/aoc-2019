@@ -50,6 +50,6 @@ pub fn read(path: impl AsRef<Path>) -> Result<Vec<i16>, Box<dyn Error>> {
     let v: Vec<i16> = fs::read_to_string(path)?
         .split(",")
         .map(|c| c.parse().unwrap_or(0))
-        .collect::<Vec<i16>>();
+        .collect();
     Ok(v)
 }
