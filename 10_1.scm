@@ -1,6 +1,8 @@
 (use-modules (ice-9 rdelim)) ;read-line
 (use-modules (srfi srfi-1))  ;split-at,map,fold,etc
 
+(define w 0)
+
 ;recurse fanning out in both directions from n
 (define (detect field len n)
   (if (bitvector-ref field n)
@@ -10,15 +12,28 @@
             (+ l r))))
       0))
 
+(define (check a b)
+  (if (> b 0)
+      (eq? 0 (modulo a b))
+      #f))
+
 (define (is-new det off acc)
   (display det)(newline)
   (display off)(newline)
-  (if (eq? 0 (modulo off det))
-      (set! acc #f))
+  (if (check (first off) (first det))
+      (if (check (second off) (second det))
+          (set! acc #f)))
   acc)
 
+(define (2d-off off)
+  (display off)(newline)
+  (let ((rows (floor (/ off w))))
+    (display rows)(newline)
+    (list rows (- off (* w rows)))))
+
 (define (detect-dir dir field l a n det)
-  (define offset (abs (- a n)))
+  (define off (abs (- a n)))
+  (define offset (2d-off off))
   (if (>= n 0)
       (if (< n l)
           (begin
@@ -51,6 +66,7 @@
 (let ((s ""))
   (do ((c (read-line) (read-line)))
       ((eof-object? c) 'done)
+      (set! w (string-length c))
       (set! s (string-append s c)))
   (let ((l (string->list s)))
     (let ((m (list->bitvector (map to-bit l))))
