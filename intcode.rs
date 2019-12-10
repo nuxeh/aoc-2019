@@ -9,9 +9,18 @@ enum ParamMode {
     Relative,
 }
 
+struct InputParam {
+    value: u8,
+    mode: ParamMode,
+}
+
+struct OutputParam {
+    value: u8,
+}
+
 enum Intcode {
-    ADD(Parameter, Parameter::Input, Parameter::Output),
-    MULT(Parameter::Input, Parameter::Input, Parameter::Output),
-    SET(Parameter::Output),
-    DISP(Parameter::Input),
+    ADD(InputParam, InputParam, OutputParam),
+    MULT(InputParam, InputParam, OutputParam),
+    SET(OutputParam),
+    DISP(InputParam),
 }
