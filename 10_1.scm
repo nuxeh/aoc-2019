@@ -14,16 +14,18 @@
 
 (define (detect-dir dir field l a n det)
   (define offset (abs (- a n)))
-  (if (fold (lambda (d acc) is-new d offset acc) #t det)
-      (set! det (append det (list offset))))
-  (display n)
-  (if dir
-      (if (> n 0)
-          (detect-dir #t field l a (1- n) det) ;left
-          det)
+  (if (>= n 0)
       (if (< n l)
-          (detect-dir #f field l a (1+ n) det) ;right
-          det)))
+          (begin
+            (if (bitvector-ref field n)
+                (if (fold (lambda (d acc) is-new d offset acc) #t det)
+                    (set! det (append det (list offset)))))
+            (display n)(display det)(newline)
+            (if dir
+                (detect-dir #t field l a (1- n) det)  ;left
+                (detect-dir #f field l a (1+ n) det))) ;right
+          det)
+      det))
 
 (define (to-bit v)
   (if (equal? v #\#)
