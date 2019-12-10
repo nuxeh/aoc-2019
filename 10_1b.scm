@@ -18,12 +18,19 @@
 (define (get-vec v1 v2)
   (list (- (first v1) (first v2)) (- (second v1) (second v2))))
 
+(define (detected v det)
+  (if (fold (lambda (d res)
+              (if (is-line-of-sight v d)
+                  #t
+                  res)) #f det)
+      det
+      (append det v)))
+
 (define (det ast alist)
   (define det '())
   (define vecs (map (lambda (a) (get-vec ast a)) alist))
-
-  ;(fold (lambda (a acc) ()) '() vecs)
-
+  (display vecs)
+  
   (length det))
 
 (define (detect asteroids)
