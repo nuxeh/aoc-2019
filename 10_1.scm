@@ -1,3 +1,9 @@
+; this is super nasty and was re-written as 10_1b.scm
+
+; tried to be too clever and treat the data as dimensionless, which went fine
+; until it turned out that this wasn't going to work, at which point, a dodgy
+; vector calculation was hacked in.
+
 (use-modules (ice-9 rdelim)) ;read-line
 (use-modules (srfi srfi-1))  ;split-at,map,fold,etc
 
