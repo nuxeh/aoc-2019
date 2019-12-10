@@ -2,27 +2,40 @@ use std::fs;
 use std::path::Path;
 use std::error::Error;
 
-enum ParamMode {
+#[derive(Debug)]
+pub enum ParamMode {
     Immediate,
     Position,
     Relative,
 }
 
-struct InputParam {
+#[derive(Debug)]
+pub struct InputParam {
     value: i16,
     mode: ParamMode,
 }
 
-struct OutputParam {
+#[derive(Debug)]
+pub struct OutputParam {
     value: i16,
 }
 
 #[allow(non_camel_case_types)]
-enum Intcode {
+#[derive(Debug)]
+pub enum Intcode {
     ADD(InputParam, InputParam, OutputParam),
     MULT(InputParam, InputParam, OutputParam),
     SET(OutputParam),
     DISP(InputParam),
+}
+
+impl Intcode {
+    pub fn get(mem: &Vec<i16>, ic: usize) -> Self {
+        println!("{}", mem[ic]);
+        Self::ADD(InputParam {value: 0, mode: ParamMode::Position},
+                  InputParam {value: 0, mode: ParamMode::Position},
+                  OutputParam {value: 0})
+    }
 }
 
 impl Intcode {
@@ -36,7 +49,7 @@ impl Intcode {
     }
 }
 
-fn get_modes(mut intcode: i16) -> [i16; 4] {
+fn parse_op(mut intcode: i16) -> [i16; 4] {
   let c = intcode / 10000;
   intcode -= c * 10000;
   let b = intcode / 1000;
