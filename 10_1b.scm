@@ -7,7 +7,9 @@
   (define y (first v))
   (define x (second v))
   (define l (sqrt (+ (* x x) (* y y))))
-  (list (/ x l) (/ y l)))
+  (if (eq? l 0)
+      (list 0 0)
+      (list (/ x l) (/ y l))))
 
 (define (is-line-of-sight a1 a2)
   (define uv1 (unit-vector a1))
@@ -18,20 +20,26 @@
 (define (get-vec v1 v2)
   (list (- (first v1) (first v2)) (- (second v1) (second v2))))
 
+(define (check d v res)
+  (display d)(newline)
+  (display v)(newline)
+  (display res)(newline)
+  (if (is-line-of-sight v d)
+      #t
+      res))
+
 (define (detected v det)
-  (if (fold (lambda (d res)
-              (if (is-line-of-sight v d)
-                  #t
-                  res)) #f det)
+  (display "det ")(display det)(newline)
+  (display "v   ")(display v)(newline)(newline)
+  (if (fold (lambda (d r) (check d v r)) #f det)
       det
-      (append det v)))
+      (append det (list v))))
 
 (define (det ast alist)
   (define det '())
   (define vecs (map (lambda (a) (get-vec ast a)) alist))
   (display vecs)
-  
-  (length det))
+  (length (fold detected '() vecs)))
 
 (define (detect asteroids)
   (map (lambda (a) (det a asteroids)) asteroids))
