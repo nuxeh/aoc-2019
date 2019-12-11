@@ -27,33 +27,33 @@
   (list (- (first v2) (first v1)) (- (second v2) (second v1))))
 
 (define (check val res)
-  (display "first")(display (first val))(newline)
-  (if (first val)
-      (list #t (second val))
+  (if val
+      val
       res))
 
 (define (detected v det)
-  (define clashes (map (lambda (d) (list (is-line-of-sight d v) d)) det))
-  (define dv '(2 4))
-  (define clash? (fold check '(#f ()) clashes))
+  (define clashes (map (lambda (d) (if (is-line-of-sight d v)
+                                       d
+                                       #f)) det))
+  (define clash? (fold check #f clashes))
   (display clashes)(newline)
   (display clash?)(newline)
   (display det)(newline)
   (if clash?
-      (if (< (mag^2 v) (mag^2 dv))
+      (if (< (mag^2 v) (mag^2 clash?))
           ;replace detection with closer asteroid
           (begin
             (display "----")(newline)
             (display v)(newline)
             (display (mag^2 v))
             (display "|")
-            (display (mag^2 dv))
+            (display (mag^2 clash?))
             (newline)
             (display "dv ")
-            (display dv)
+            (display clash?)
             (newline)
             (display "----")(newline)
-            (append (delete dv det) (list v)))
+            (append (delete clash? det) (list v)))
           det)
       (append det (list v))))
 
