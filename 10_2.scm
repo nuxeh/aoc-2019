@@ -2,6 +2,7 @@
 (use-modules (srfi srfi-1))  ;split-at,map,fold,etc
 
 (define w 0)
+(define 2pi 6.28318530718)
 
 (define (unit-vector v)
   (define y (first v))
@@ -17,8 +18,8 @@
   (and (< (abs (- (first uv1) (first uv2))) 0.00001)
        (< (abs (- (second uv1) (second uv2))) 0.00001)))
 
-(define (get-vec v1 v2)
-  (list (- (first v1) (first v2)) (- (second v1) (second v2))))
+(define (get-vec v2 v1)
+  (list (- (first v2) (first v1)) (- (second v2) (second v1))))
 
 (define (check d v res)
   (if (is-line-of-sight v d)
@@ -57,7 +58,17 @@
                   a
                   b)) '(0 0) l))
 
+(define (get-angle ast)
+  (/ 2pi (atan (first ast) (second ast))))
+
+(define (less l l2)
+  (< (first l) (first l2)))
+
 (define (part/2 station asteroids)
+  (let ((detection (det station (delete station asteroids))))
+    (let ((sort1 (sort-list (map (lambda (d) (cons (get-angle d) d)) detection) less)))
+      (let ((sort2 (list (last sort1) (delete (last sort1) sort1))))
+        (display sort2))))
   #t)
 
 (let ((s ""))
@@ -68,6 +79,8 @@
       (set! s (string-append s c)))
   (let ((l (string->list s)))            ;get list of characters
     (let ((asts (asteroids l)))          ;get coord for each asteroid
+      (display (detect asts))
       (let ((best (dmax (detect asts)))) ;detect and get ast with most detections
-        (display (first best))           ;part 1
+        (display (first best))(newline)  ;part 1
+        (display (second best))(newline) ;part 1
         (part/2 (first best) asts)))))   ;part 2
