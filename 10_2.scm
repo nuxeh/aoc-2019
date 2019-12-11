@@ -33,7 +33,7 @@
 
 (define (detected v det)
   (define clashes (map (lambda (d) (is-line-of-sight d v)) det))
-  (define dv '(2 2))
+  (define dv '(2 4))
   (define clash? (fold check #f clashes))
   (display clash?)(newline)
   (display det)(newline)
