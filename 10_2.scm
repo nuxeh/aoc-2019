@@ -32,7 +32,6 @@
 
 (define (det ast alist)
   (define vecs (map (lambda (a) (get-vec ast a)) alist))
-  ;(display vecs)(newline)
   (fold detected '() vecs))
 
 (define (detect asteroids)
@@ -58,12 +57,17 @@
                   a
                   b)) '(0 0) l))
 
+(define (part/2 station asteroids)
+  #t)
+
 (let ((s ""))
   (do ((c (read-line) (read-line)))
       ((eof-object? c) 'done)
       (if (> (string-length c) w)
-          (set! w (string-length c)))
+          (set! w (string-length c)))    ;detect input width
       (set! s (string-append s c)))
-  (let ((l (string->list s)))
-    (let ((best (dmax (detect (asteroids l)))))
-      (display (first best)))))
+  (let ((l (string->list s)))            ;get list of characters
+    (let ((asts (asteroids l)))          ;get coord for each asteroid
+      (let ((best (dmax (detect asts)))) ;detect and get ast with most detections
+        (display (first best))           ;part 1
+        (part/2 (first best) asts)))))   ;part 2
