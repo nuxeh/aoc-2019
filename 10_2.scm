@@ -2,6 +2,7 @@
 (use-modules (srfi srfi-1))  ;split-at,map,fold,etc
 
 (define w 0)
+(define station #f)
 (define 2pi 6.28318530718)
 
 (define (unit-vector v)
@@ -90,9 +91,15 @@
 (define (less l l2)
   (< (first l) (first l2)))
 
+(define (absolut x y)
+  (define x/ (- (first station) x))
+  (define y/ (- (second station) y))
+  (list x/ y/))
+
 (define (dast a n)
+  (define aa (absolut (second a) (third a)))
   (display n)(display "\t| ")
-  (display (second a))(display ", ")(display (third a))
+  (display (first aa))(display ", ")(display (second aa))
   (newline))
 
 (define (part/2 station asteroids)
@@ -113,6 +120,7 @@
   (let ((l (string->list s)))            ;get list of characters
     (let ((asts (asteroids l)))          ;get coord for each asteroid
       (let ((best (dmax (detect asts)))) ;detect and get ast with most detections
+        (set! station (first best))
         (display (first best))(newline)  ;part 1
         (display (second best))(newline) ;part 1
         (part/2 (first best) asts)))))   ;part 2
