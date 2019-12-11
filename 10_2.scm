@@ -27,14 +27,16 @@
   (list (- (first v2) (first v1)) (- (second v2) (second v1))))
 
 (define (check val res)
-  (if val
-      #t
+  (display "first")(display (first val))(newline)
+  (if (first val)
+      (list #t (second val))
       res))
 
 (define (detected v det)
-  (define clashes (map (lambda (d) (is-line-of-sight d v)) det))
+  (define clashes (map (lambda (d) (list (is-line-of-sight d v) d)) det))
   (define dv '(2 4))
-  (define clash? (fold check #f clashes))
+  (define clash? (fold check '(#f ()) clashes))
+  (display clashes)(newline)
   (display clash?)(newline)
   (display det)(newline)
   (if clash?
