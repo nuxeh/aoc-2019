@@ -112,7 +112,7 @@
       (set! s (string-append s c)))
   (let ((l (string->list s)))            ;get list of characters
     (let ((asts (asteroids l)))          ;get coord for each asteroid
-      (let ((best '((3 4) 8)));(dmax (detect asts)))) ;detect and get ast with most detections
+      (let ((best (dmax (detect asts)))) ;detect and get ast with most detections
         (display (first best))(newline)  ;part 1
         (display (second best))(newline) ;part 1
         (part/2 (first best) asts)))))   ;part 2
