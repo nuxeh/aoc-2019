@@ -31,10 +31,9 @@
       (append det (list v))))
 
 (define (det ast alist)
-  (define det '())
   (define vecs (map (lambda (a) (get-vec ast a)) alist))
   ;(display vecs)(newline)
-  (1- (length (fold detected '() vecs))))
+  (list ast (1- (length (fold detected '() vecs)))))
 
 (define (detect asteroids)
   (map (lambda (a) (det a asteroids)) asteroids))
@@ -53,6 +52,13 @@
             (set! n (1+ n))
             a)) '() l))
 
+(define (dmax l)
+    (reduce (lambda (a b)
+              (if (> (second a) (second b))
+                  a
+                  b)) '(0 0) l))
+
+
 (let ((s ""))
   (do ((c (read-line) (read-line)))
       ((eof-object? c) 'done)
@@ -60,4 +66,4 @@
           (set! w (string-length c)))
       (set! s (string-append s c)))
   (let ((l (string->list s)))
-    (display (reduce max 0 (detect (asteroids l))))))
+    (display (dmax (detect (asteroids l))))))
