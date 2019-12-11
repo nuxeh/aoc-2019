@@ -37,24 +37,10 @@
                                        d
                                        #f)) det))
   (define clash? (fold check #f clashes))
-;  (display clashes)(newline)
-;  (display clash?)(newline)
-;  (display det)(newline)
   (if clash?
       (if (< (mag^2 v) (mag^2 clash?))
           ;replace detection with closer asteroid
-          (begin
-;            (display "----")(newline)
-;            (display v)(newline)
-;            (display (mag^2 v))
-;            (display "|")
-;            (display (mag^2 clash?))
-;            (newline)
-;            (display "dv ")
-;            (display clash?)
-;            (newline)
-;            (display "----")(newline)
-            (append (delete clash? det) (list v)))
+          (append (delete clash? det) (list v))
           det)
       (append det (list v))))
 
