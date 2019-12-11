@@ -20,21 +20,24 @@
 (define (is-line-of-sight a1 a2)
   (define uv1 (unit-vector a1))
   (define uv2 (unit-vector a2))
-  (and (< (abs (- (first uv1) (first uv2))) 0.00001)
-       (< (abs (- (second uv1) (second uv2))) 0.00001)))
+  (and (< (abs (- (first uv1) (first uv2))) 0.0000001)
+       (< (abs (- (second uv1) (second uv2))) 0.0000001)))
 
 (define (get-vec v2 v1)
   (list (- (first v2) (first v1)) (- (second v2) (second v1))))
 
-(define (check d v res)
-  (if (is-line-of-sight v d)
+(define (check val res)
+  (if val
       #t
       res))
 
 (define (detected v det)
-  (define dv '(0 0))
+  (define clashes (map (lambda (d) (is-line-of-sight d v)) det))
+  (define dv '(2 2))
+  (define clash? (fold check #f clashes))
+  (display clash?)(newline)
   (display det)(newline)
-  (if (fold (lambda (d r) (set! dv d)(display d)(newline)(check d v r)) #f det)
+  (if clash?
       (if (< (mag^2 v) (mag^2 dv))
           ;replace detection with closer asteroid
           (begin
