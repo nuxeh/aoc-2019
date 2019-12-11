@@ -12,6 +12,11 @@
       (list 0 0)
       (list (/ x l) (/ y l))))
 
+(define (mag^2 v)
+  (define y (first v))
+  (define x (second v))
+  (+ (* x x) (* y y)))
+
 (define (is-line-of-sight a1 a2)
   (define uv1 (unit-vector a1))
   (define uv2 (unit-vector a2))
@@ -27,8 +32,24 @@
       res))
 
 (define (detected v det)
-  (if (fold (lambda (d r) (check d v r)) #f det)
-      det
+  (define dv '(0 0))
+  (display det)(newline)
+  (if (fold (lambda (d r) (set! dv d)(display d)(newline)(check d v r)) #f det)
+      (if (< (mag^2 v) (mag^2 dv))
+          ;replace detection with closer asteroid
+          (begin
+            (display "----")(newline)
+            (display v)(newline)
+            (display (mag^2 v))
+            (display "|")
+            (display (mag^2 dv))
+            (newline)
+            (display "dv ")
+            (display dv)
+            (newline)
+            (display "----")(newline)
+            (append (delete dv det) (list v)))
+          det)
       (append det (list v))))
 
 (define (det ast alist)
@@ -86,8 +107,7 @@
       (set! s (string-append s c)))
   (let ((l (string->list s)))            ;get list of characters
     (let ((asts (asteroids l)))          ;get coord for each asteroid
-      (display (detect asts))
-      (let ((best (dmax (detect asts)))) ;detect and get ast with most detections
+      (let ((best '((3 4) 8)));(dmax (detect asts)))) ;detect and get ast with most detections
         (display (first best))(newline)  ;part 1
         (display (second best))(newline) ;part 1
         (part/2 (first best) asts)))))   ;part 2
