@@ -64,11 +64,18 @@
 (define (less l l2)
   (< (first l) (first l2)))
 
+(define (dast a n)
+  (display n)(display "\t| ")
+  (display (second a))(display ", ")(display (third a))
+  (newline))
+
 (define (part/2 station asteroids)
+  (define n 0)
   (let ((detection (det station (delete station asteroids))))
     (let ((sort1 (sort-list (map (lambda (d) (cons (get-angle d) d)) detection) less)))
-      (let ((sort2 (list (last sort1) (delete (last sort1) sort1))))
-        (display sort2))))
+      (let ((sort2 (cons (last sort1) (delete (last sort1) sort1))))
+        (display sort2)(newline)
+        (for-each (lambda (a) (set! n (1+ n))(dast a n)) sort2))))
   #t)
 
 (let ((s ""))
