@@ -48,8 +48,8 @@ pub enum Intcode {
 }
 
 impl Intcode {
-    pub fn get(mem: &Vec<i16>, ic: usize) -> Self {
-        println!("{}", mem[ic]);
+    pub fn get(comp: &IntcodeComputer) -> Self {
+        println!("{}", comp.mem[comp.ic]);
         Self::ADD(InputParam {value: 0, mode: ParamMode::Position},
                   InputParam {value: 0, mode: ParamMode::Position},
                   OutputParam {value: 0})
@@ -88,7 +88,7 @@ pub fn read_file(path: impl AsRef<Path>) -> Result<Vec<i16>, Box<dyn Error>> {
 }
 
 #[derive(Debug, Clone)]
-struct IntcodeComputer {
+pub struct IntcodeComputer {
     /// memory
     mem: Vec<i16>,
     /// instruction counter
@@ -98,7 +98,7 @@ struct IntcodeComputer {
 }
 
 impl IntcodeComputer {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             mem: vec!(),
             ic: 0,
@@ -107,21 +107,21 @@ impl IntcodeComputer {
         }
     }
 
-    fn load_mem(&mut self, mem: Vec<i16>) -> &mut Self {
+    pub fn load_mem(&mut self, mem: Vec<i16>) -> &mut Self {
         self.mem = mem;
         self
     }
 
-    fn input(&mut self, input: i16) -> &mut Self{
+    pub fn input(&mut self, input: i16) -> &mut Self{
         self.inputs.push(input);
         self
     }
 
-    fn init(&self) -> Self {
+    pub fn init(&self) -> Self {
         self.clone()
     }
 
-    fn run() {
+    pub fn run() {
         // get intcode
         // exec intcode
         // jump to new entry point
