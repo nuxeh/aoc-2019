@@ -2,6 +2,8 @@ use std::fs;
 use std::path::Path;
 use std::error::Error;
 
+//mod ops;
+
 #[derive(Debug)]
 pub enum ParamMode {
     Immediate,
@@ -13,6 +15,22 @@ pub enum ParamMode {
 pub struct InputParam {
     value: i16,
     mode: ParamMode,
+}
+
+impl InputParam {
+    fn value(&self, mem: &Vec<i16>) -> Result<i16, Box<dyn Error>> {
+        match self.mode {
+            ParamMode::Immediate => Ok(self.value),
+            ParamMode::Position => {
+                if let Some(v) = mem.get(self.value as usize) {
+                    Ok(v.clone())
+                } else {
+                    Err("invalid address".into())
+                }
+            },
+            _ => Err("unimplemented input parameter type".into()),
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -37,6 +55,10 @@ impl Intcode {
                   OutputParam {value: 0})
     }
 
+    pub fn exec(mem: &mut Vec<i16>, ic: usize) -> usize {
+        42
+    }
+
     fn len(&self) -> usize {
         match self {
             Self::ADD(_, _, _) => 4,
@@ -46,7 +68,7 @@ impl Intcode {
         }
     }
 
-    fn get_op_modes(mut intcode: i16) -> [i16; 4] {
+    fn get_opcode_and_param_modes(mut intcode: i16) -> [i16; 4] {
         let c = intcode / 10000;
         intcode -= c * 10000;
         let b = intcode / 1000;
@@ -57,10 +79,51 @@ impl Intcode {
     }
 }
 
-pub fn read(path: impl AsRef<Path>) -> Result<Vec<i16>, Box<dyn Error>> {
+pub fn read_file(path: impl AsRef<Path>) -> Result<Vec<i16>, Box<dyn Error>> {
     let v: Vec<i16> = fs::read_to_string(path)?
         .split(",")
         .map(|c| c.parse().unwrap_or(0))
         .collect();
     Ok(v)
+}
+
+#[derive(Debug, Clone)]
+struct IntcodeComputer {
+    /// memory
+    mem: Vec<i16>,
+    /// instruction counter
+    ic: usize,
+    inputs: Vec<i16>,
+    outputs: Vec<i16>,
+}
+
+impl IntcodeComputer {
+    fn new() -> Self {
+        Self {
+            mem: vec!(),
+            ic: 0,
+            inputs: vec!(),
+            outputs: vec!(),
+        }
+    }
+
+    fn load_mem(&mut self, mem: Vec<i16>) -> &mut Self {
+        self.mem = mem;
+        self
+    }
+
+    fn input(&mut self, input: i16) -> &mut Self{
+        self.inputs.push(input);
+        self
+    }
+
+    fn init(&self) -> Self {
+        self.clone()
+    }
+
+    fn run() {
+        // get intcode
+        // exec intcode
+        // jump to new entry point
+    }
 }
