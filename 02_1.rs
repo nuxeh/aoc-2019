@@ -23,4 +23,5 @@ fn main() {
 
     println!("{:?}", Intcode::get(&comp));
     println!("{:?}", comp);
+    comp.run();
 }

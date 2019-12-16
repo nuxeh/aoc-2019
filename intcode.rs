@@ -67,6 +67,7 @@ pub enum Intcode {
     MULT(InputParam, InputParam, OutputParam),
     SET(OutputParam),
     DISP(InputParam),
+    STOP(),
     ERR(),
 }
 
@@ -83,6 +84,7 @@ impl Intcode {
                     OutputParam::new(comp.mem[comp.ic+3])),
             3 => Self::SET(OutputParam::new(comp.mem[comp.ic+1])),
             4 => Self::DISP(InputParam::new(comp.mem[comp.ic+1], op_modes[1])),
+            99 => Self::STOP(),
             _ => Self::ERR(),
         }
     }
@@ -154,8 +156,9 @@ impl IntcodeComputer {
         self.clone()
     }
 
-    pub fn run() {
+    pub fn run(&mut self) {
         // get intcode
+        println!("{:?}", Intcode::get(&self));
         // exec intcode
         // jump to new entry point
     }
