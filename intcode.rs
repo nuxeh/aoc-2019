@@ -9,6 +9,18 @@ pub enum ParamMode {
     Immediate,
     Position,
     Relative,
+    Invalid,
+}
+
+impl ParamMode {
+    fn from(mode: i16) -> Self {
+        match mode {
+            0 => Self::Immediate,
+            1 => Self::Position,
+            2 => Self::Relative,
+            _ => Self::Invalid,
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -18,6 +30,10 @@ pub struct InputParam {
 }
 
 impl InputParam {
+    fn new(value: i16, mode: i16) -> Self {
+        InputParam {value, mode: ParamMode::from(mode)}
+    }
+
     fn value(&self, mem: &Vec<i16>) -> Result<i16, Box<dyn Error>> {
         match self.mode {
             ParamMode::Immediate => Ok(self.value),
@@ -38,6 +54,12 @@ pub struct OutputParam {
     value: i16,
 }
 
+impl OutputParam {
+    fn new(value: i16) -> Self {
+        OutputParam {value}
+    }
+}
+
 #[allow(non_camel_case_types)]
 #[derive(Debug)]
 pub enum Intcode {
@@ -49,10 +71,26 @@ pub enum Intcode {
 
 impl Intcode {
     pub fn get(comp: &IntcodeComputer) -> Self {
+        let val = comp.mem[comp.ic];
         println!("{}", comp.mem[comp.ic]);
+        let op_modes = Self::get_opcode_and_param_modes(val);
+        println!("{:?}", op_modes);
+
+        match op_modes[0] {
+            1 => {
+                Self::ADD(
+                    InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
+                    InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
+                    OutputParam::new(comp.mem[comp.ic+3])
+                )
+            },
+            _ => {
+
         Self::ADD(InputParam {value: 0, mode: ParamMode::Position},
                   InputParam {value: 0, mode: ParamMode::Position},
                   OutputParam {value: 0})
+            },
+        }
     }
 
     pub fn exec(mem: &mut Vec<i16>, ic: usize) -> usize {
