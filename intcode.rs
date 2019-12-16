@@ -67,29 +67,23 @@ pub enum Intcode {
     MULT(InputParam, InputParam, OutputParam),
     SET(OutputParam),
     DISP(InputParam),
+    ERR(),
 }
 
 impl Intcode {
     pub fn get(comp: &IntcodeComputer) -> Self {
         let val = comp.mem[comp.ic];
-        println!("{}", comp.mem[comp.ic]);
         let op_modes = Self::get_opcode_and_param_modes(val);
-        println!("{:?}", op_modes);
-
         match op_modes[0] {
-            1 => {
-                Self::ADD(
-                    InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
+            1 => Self::ADD(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
-                    OutputParam::new(comp.mem[comp.ic+3])
-                )
-            },
-            _ => {
-
-        Self::ADD(InputParam {value: 0, mode: ParamMode::Position},
-                  InputParam {value: 0, mode: ParamMode::Position},
-                  OutputParam {value: 0})
-            },
+                    OutputParam::new(comp.mem[comp.ic+3])),
+            2 => Self::MULT(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
+                    InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
+                    OutputParam::new(comp.mem[comp.ic+3])),
+            3 => Self::SET(OutputParam::new(comp.mem[comp.ic+1])),
+            4 => Self::DISP(InputParam::new(comp.mem[comp.ic+1], op_modes[1])),
+            _ => Self::ERR(),
         }
     }
 
@@ -103,6 +97,7 @@ impl Intcode {
             Self::MULT(_, _, _) => 4,
             Self::SET(_) => 2,
             Self::DISP(_) => 2,
+            _ => 0,
         }
     }
 
