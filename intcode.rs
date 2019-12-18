@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 use std::error::Error;
 
-//mod ops;
+mod ops;
 
 #[derive(Debug)]
 pub enum ParamMode {
@@ -89,8 +89,16 @@ impl Intcode {
         }
     }
 
-    pub fn exec(mem: &mut Vec<i16>, ic: usize) -> usize {
-        42
+    pub fn exec(&self, comp: &mut IntcodeComputer) -> bool {
+        match self {
+            Self::ADD(i, j, o) => ops::ADD(i.value(), j.value()),
+            Self::MULT(i, j, o) => (),
+            Self::SET(o) => (),
+            Self::DISP(i) => (),
+            Self::STOP() => (),
+            Self::ERR() => (),
+        };
+        true
     }
 
     fn len(&self) -> usize {
@@ -157,9 +165,12 @@ impl IntcodeComputer {
     }
 
     pub fn run(&mut self) {
-        // get intcode
-        println!("{:?}", Intcode::get(&self));
-        // exec intcode
-        // jump to new entry point
+        loop {
+            // get intcode
+            let intcode = Intcode::get(&self);
+            // exec intcode
+            intcode.exec(self);
+            // jump to new entry point
+        }
     }
 }
