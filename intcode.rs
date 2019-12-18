@@ -180,3 +180,17 @@ impl IntcodeComputer {
         }
     }
 }
+
+#[test]
+fn day2() {
+    let mem = read_file("02_1_i1.txt").unwrap();
+    let mut comp = IntcodeComputer::new()
+        .load_mem(mem)
+        .init();
+
+    comp
+        .run()
+        .unwrap();
+
+    assert_eq!(3267740, comp.mem[0]);
+}
