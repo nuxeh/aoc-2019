@@ -11,7 +11,7 @@ pub enum ParamMode {
 }
 
 impl ParamMode {
-    fn from(mode: i16) -> Self {
+    fn from(mode: i64) -> Self {
         match mode {
             0 => Self::Position,
             1 => Self::Immediate,
@@ -23,16 +23,16 @@ impl ParamMode {
 
 #[derive(Debug)]
 pub struct InputParam {
-    value: i16,
+    value: i64,
     mode: ParamMode,
 }
 
 impl InputParam {
-    fn new(value: i16, mode: i16) -> Self {
+    fn new(value: i64, mode: i64) -> Self {
         InputParam {value, mode: ParamMode::from(mode)}
     }
 
-    fn get(&self, comp: &IntcodeComputer) -> Result<i16, Box<dyn Error>> {
+    fn get(&self, comp: &IntcodeComputer) -> Result<i64, Box<dyn Error>> {
         match self.mode {
             ParamMode::Immediate => Ok(self.value),
             ParamMode::Position => {
@@ -49,15 +49,15 @@ impl InputParam {
 
 #[derive(Debug)]
 pub struct OutputParam {
-    address: i16,
+    address: i64,
 }
 
 impl OutputParam {
-    fn new(address: i16) -> Self {
+    fn new(address: i64) -> Self {
         OutputParam {address}
     }
 
-    fn set(&self, comp: &mut IntcodeComputer, value: i16) {
+    fn set(&self, comp: &mut IntcodeComputer, value: i64) {
         comp.mem[self.address as usize] = value;
     }
 }
@@ -115,7 +115,7 @@ impl Intcode {
         }
     }
 
-    fn get_opcode_and_param_modes(mut intcode: i16) -> [i16; 4] {
+    fn get_opcode_and_param_modes(mut intcode: i64) -> [i64; 4] {
         let c = intcode / 10000;
         intcode -= c * 10000;
         let b = intcode / 1000;
@@ -126,8 +126,8 @@ impl Intcode {
     }
 }
 
-pub fn read_file(path: impl AsRef<Path>) -> Result<Vec<i16>, Box<dyn Error>> {
-    let v: Vec<i16> = fs::read_to_string(path)?
+pub fn read_file(path: impl AsRef<Path>) -> Result<Vec<i64>, Box<dyn Error>> {
+    let v: Vec<i64> = fs::read_to_string(path)?
         .split(",")
         .map(|c| c.parse().unwrap_or(0))
         .collect();
@@ -137,11 +137,11 @@ pub fn read_file(path: impl AsRef<Path>) -> Result<Vec<i16>, Box<dyn Error>> {
 #[derive(Debug, Clone)]
 pub struct IntcodeComputer {
     /// memory
-    pub mem: Vec<i16>,
+    pub mem: Vec<i64>,
     /// instruction counter
     ic: usize,
-    inputs: Vec<i16>,
-    outputs: Vec<i16>,
+    inputs: Vec<i64>,
+    outputs: Vec<i64>,
 }
 
 impl IntcodeComputer {
@@ -154,12 +154,12 @@ impl IntcodeComputer {
         }
     }
 
-    pub fn load_mem(&mut self, mem: Vec<i16>) -> &mut Self {
+    pub fn load_mem(&mut self, mem: Vec<i64>) -> &mut Self {
         self.mem = mem;
         self
     }
 
-    pub fn input(&mut self, input: i16) -> &mut Self{
+    pub fn input(&mut self, input: i64) -> &mut Self{
         self.inputs.push(input);
         self
     }
