@@ -101,6 +101,7 @@ impl Intcode {
             Self::STOP() => (c = false),
             Self::ERR() => return Err("invalid intcode".into()),
         };
+        comp.ic += self.len();
         Ok(c)
     }
 
@@ -171,6 +172,7 @@ impl IntcodeComputer {
         loop {
             // get intcode
             let intcode = Intcode::get(&self);
+            println!("{:?}", intcode);
             // exec intcode
             if !intcode.exec(self)? {
                 break Ok(());
