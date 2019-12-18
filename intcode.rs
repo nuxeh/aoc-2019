@@ -91,10 +91,10 @@ impl Intcode {
 
     pub fn exec(&self, comp: &mut IntcodeComputer) -> bool {
         match self {
-            Self::ADD(i, j, o) => ops::ADD(i.value(), j.value()),
-            Self::MULT(i, j, o) => (),
-            Self::SET(o) => (),
-            Self::DISP(i) => (),
+            Self::ADD(_, _, _) => ops::ADD(self, comp),
+            Self::MULT(_, _, _) => ops::MULT(self, comp),
+            Self::SET(_) => (),
+            Self::DISP(_) => (),
             Self::STOP() => (),
             Self::ERR() => (),
         };

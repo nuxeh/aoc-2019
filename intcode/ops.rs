@@ -1,3 +1,8 @@
-pub fn ADD(a: i16, b: i16) -> i16 {
-    a + b
+use intcode::{Intcode, IntcodeComputer};
+
+pub fn ADD(int: &Intcode, comp: &mut IntcodeComputer) {
+
+}
+
+pub fn MULT(int: &Intcode, comp: &mut IntcodeComputer) {
 }
