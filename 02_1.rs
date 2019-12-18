@@ -23,5 +23,8 @@ fn main() {
 
     println!("{:?}", Intcode::get(&comp));
     println!("{:?}", comp);
-    comp.run();
+
+    comp.run().unwrap_or_else(|e| {
+        eprintln!("error in execution: {}", e);
+    });
 }

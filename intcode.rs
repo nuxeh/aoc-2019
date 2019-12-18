@@ -2,8 +2,6 @@ use std::fs;
 use std::path::Path;
 use std::error::Error;
 
-mod ops;
-
 #[derive(Debug)]
 pub enum ParamMode {
     Immediate,
@@ -34,11 +32,11 @@ impl InputParam {
         InputParam {value, mode: ParamMode::from(mode)}
     }
 
-    fn value(&self, mem: &Vec<i16>) -> Result<i16, Box<dyn Error>> {
+    fn get(&self, comp: &IntcodeComputer) -> Result<i16, Box<dyn Error>> {
         match self.mode {
             ParamMode::Immediate => Ok(self.value),
             ParamMode::Position => {
-                if let Some(v) = mem.get(self.value as usize) {
+                if let Some(v) = comp.mem.get(self.value as usize) {
                     Ok(v.clone())
                 } else {
                     Err("invalid address".into())
@@ -51,12 +49,16 @@ impl InputParam {
 
 #[derive(Debug)]
 pub struct OutputParam {
-    value: i16,
+    address: i16,
 }
 
 impl OutputParam {
-    fn new(value: i16) -> Self {
-        OutputParam {value}
+    fn new(address: i16) -> Self {
+        OutputParam {address}
+    }
+
+    fn set(&self, comp: &mut IntcodeComputer, value: i16) {
+        comp.mem[self.address as usize] = value;
     }
 }
 
@@ -89,16 +91,17 @@ impl Intcode {
         }
     }
 
-    pub fn exec(&self, comp: &mut IntcodeComputer) -> bool {
+    pub fn exec(&self, comp: &mut IntcodeComputer) -> Result<bool, Box<dyn Error>> {
+        let mut c = true;
         match self {
-            Self::ADD(_, _, _) => ops::ADD(self, comp),
-            Self::MULT(_, _, _) => ops::MULT(self, comp),
+            Self::ADD(i, j, o) => o.set(comp, i.get(comp)? + j.get(comp)?),
+            Self::MULT(i, j, o) => o.set(comp, i.get(comp)? * j.get(comp)?),
             Self::SET(_) => (),
             Self::DISP(_) => (),
-            Self::STOP() => (),
-            Self::ERR() => (),
+            Self::STOP() => (c = false),
+            Self::ERR() => return Err("invalid intcode".into()),
         };
-        true
+        Ok(c)
     }
 
     fn len(&self) -> usize {
@@ -164,13 +167,14 @@ impl IntcodeComputer {
         self.clone()
     }
 
-    pub fn run(&mut self) {
+    pub fn run(&mut self) -> Result<(), Box<dyn Error>> {
         loop {
             // get intcode
             let intcode = Intcode::get(&self);
             // exec intcode
-            intcode.exec(self);
-            // jump to new entry point
+            if !intcode.exec(self)? {
+                break Ok(());
+            }
         }
     }
 }
