@@ -4,8 +4,8 @@ use std::error::Error;
 
 #[derive(Debug)]
 pub enum ParamMode {
-    Immediate,
     Position,
+    Immediate,
     Relative,
     Invalid,
 }
@@ -13,8 +13,8 @@ pub enum ParamMode {
 impl ParamMode {
     fn from(mode: i16) -> Self {
         match mode {
-            0 => Self::Immediate,
-            1 => Self::Position,
+            0 => Self::Position,
+            1 => Self::Immediate,
             2 => Self::Relative,
             _ => Self::Invalid,
         }
@@ -137,7 +137,7 @@ pub fn read_file(path: impl AsRef<Path>) -> Result<Vec<i16>, Box<dyn Error>> {
 #[derive(Debug, Clone)]
 pub struct IntcodeComputer {
     /// memory
-    mem: Vec<i16>,
+    pub mem: Vec<i16>,
     /// instruction counter
     ic: usize,
     inputs: Vec<i16>,
@@ -172,7 +172,7 @@ impl IntcodeComputer {
         loop {
             // get intcode
             let intcode = Intcode::get(&self);
-            println!("{:?}", intcode);
+            println!("[{}] {:?}", self.ic, intcode);
             // exec intcode
             if !intcode.exec(self)? {
                 break Ok(());

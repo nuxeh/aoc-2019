@@ -27,4 +27,6 @@ fn main() {
     comp.run().unwrap_or_else(|e| {
         eprintln!("error in execution: {}", e);
     });
+
+    println!("{}", comp.mem[0]);
 }
