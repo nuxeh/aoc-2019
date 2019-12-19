@@ -10,14 +10,17 @@
       found))
 
 (define (valid? z)
-  (and (ascends? z) (contains-double? z)))
+  (define counts (count-nums z '()))
+  (and (ascends? z) (contains-double? z counts)))
 
-(define (contains-double? z)
+(define (contains-double? z counts)
   (if (null? (cdr z))
       #f
       (if (equal? (car z) (car (cdr z)))
-	  #t
-	  (contains-double? (cdr z)))))
+	  (if (equal? 2 (cdr (assoc (car z) counts)))
+	      #t
+	      (contains-double? (cdr z) counts))
+	  (contains-double? (cdr z) counts))))
 
 (define (count-nums z alist)
   (if (null? z)
@@ -39,8 +42,8 @@
 
 (display (ascends? '(1 2 3 4 5 6)))(newline)
 (display (ascends? '(1 2 3 7 5 6)))(newline)
-(display (contains-double? '(1 2 3 7 5 6)))(newline)
-(display (contains-double? '(1 2 3 5 5 6)))(newline)
+(display (valid? '(1 2 3 7 5 6)))(newline)
+(display (valid? '(1 2 3 5 5 6)))(newline)
 (display (valid? '(1 1 1 1 1 2)))(newline)
 (display (count-nums '(1 1 1 1 1 2) '()))(newline)
 
