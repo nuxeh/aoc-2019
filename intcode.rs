@@ -142,7 +142,7 @@ pub struct IntcodeComputer {
     /// instruction counter
     ic: usize,
     inputs: VecDeque<i64>,
-    outputs: Vec<i64>,
+    pub outputs: Vec<i64>,
 }
 
 impl IntcodeComputer {
@@ -190,7 +190,7 @@ impl IntcodeComputer {
     }
 
     fn print(&mut self, val: i64) {
-
+        self.outputs.push(val);
     }
 }
 
