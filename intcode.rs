@@ -197,7 +197,7 @@ impl IntcodeComputer {
 
 #[test]
 fn day2() {
-    let mem = read_file("02_1_i1.txt").unwrap();
+    let mem = read_file("02_1_i1.ic").unwrap();
     let mut comp = IntcodeComputer::new()
         .load_mem(mem)
         .init();
@@ -207,4 +207,19 @@ fn day2() {
         .unwrap();
 
     assert_eq!(3267740, comp.mem[0]);
+}
+
+#[test]
+fn day5() {
+    let mem = read_file("05_1_i1.ic").unwrap();
+    let mut comp = IntcodeComputer::new()
+        .load_mem(mem)
+        .input(1)
+        .init();
+
+    comp
+        .run()
+        .unwrap();
+
+    assert_eq!(3122865, comp.outputs.pop().unwrap());
 }
