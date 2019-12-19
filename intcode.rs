@@ -257,7 +257,6 @@ impl IntcodeComputer {
 
     fn read(&mut self) -> Result<i64, Box<dyn Error>> {
         if let Some(i) = self.inputs.pop_front() {
-            println!("read {}", i);
             Ok(i)
         } else {
             Err("no input available".into())

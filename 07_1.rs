@@ -14,8 +14,6 @@ fn main() {
         process::exit(1);
     });
 
-//    chain(&mem, 0, 1, 2, 3, 4);
-
     let mut count = 0;
     let mut best = 0;
     let mut best_phases = Vec::new();
