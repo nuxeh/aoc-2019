@@ -116,8 +116,16 @@ impl Intcode {
             Self::MULT(i, j, o) => o.set(comp, i.get(comp)? * j.get(comp)?),
             Self::SET(o) => {let r = comp.read()?; o.set(comp, r)},
             Self::DISP(i) => comp.print(i.get(comp)?),
-            Self::JMPT(i, j) => (),
-            Self::JMPF(i, j) => (),
+            Self::JMPT(i, j) => {
+                if i.get(comp)? != 0 {
+                    comp.ic = j.get(comp)? as usize;
+                }
+            },
+            Self::JMPF(i, j) => {
+                if i.get(comp)? == 0 {
+                    comp.ic = j.get(comp)? as usize;
+                }
+            },
             Self::LT(i, j, o) => {
                 if i.get(comp)? < j.get(comp)? {
                     o.set(comp, 1)
