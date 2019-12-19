@@ -14,6 +14,8 @@ fn main() {
         process::exit(1);
     });
 
+//    chain(&mem, 0, 1, 2, 3, 4);
+
     let mut count = 0;
     let mut best = 0;
     let mut best_phases = Vec::new();
@@ -22,11 +24,13 @@ fn main() {
             for c in 0..=4 {
                 for d in 0..=4 {
                     for e in 0..=4 {
-                        count += 1;
-                        let out = chain(&mem, a, b, c, d, e);
-                        if out > best {
-                            best = out;
-                            best_phases = vec!(a, b, c, d, e);
+                        if valid(a, b, c, d, e) {
+                            count += 1;
+                            let out = chain(&mem, a, b, c, d, e);
+                            if out > best {
+                                best = out;
+                                best_phases = vec!(a, b, c, d, e);
+                            }
                         }
                     }
                 }
@@ -36,6 +40,14 @@ fn main() {
     println!("{}", count);
     println!("{}", best);
     println!("{:?}", best_phases);
+}
+
+fn valid(a: i64, b: i64, c: i64, d: i64, e: i64) -> bool {
+    a != b && a != c && a != d && a != e &&
+    b != c && b != d && b != e && b != a &&
+    c != d && c != e && c != a && c != b &&
+    d != e && d != a && d != b && d != c &&
+    e != a && e != b && e != c && e != d
 }
 
 fn chain(mem: &Vec<i64>, a: i64, b: i64, c: i64, d: i64, e: i64) -> i64 {
