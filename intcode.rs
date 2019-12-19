@@ -70,6 +70,10 @@ pub enum Intcode {
     MULT(InputParam, InputParam, OutputParam),
     SET(OutputParam),
     DISP(InputParam),
+    JMPT(InputParam, InputParam),
+    JMPF(InputParam, InputParam),
+    LT(InputParam, InputParam, OutputParam),
+    EQ(InputParam, InputParam, OutputParam),
     STOP(),
     ERR(),
 }
@@ -88,6 +92,16 @@ impl Intcode {
                     OutputParam::new(comp.mem[comp.ic+3])),
             3 => Self::SET(OutputParam::new(comp.mem[comp.ic+1])),
             4 => Self::DISP(InputParam::new(comp.mem[comp.ic+1], op_modes[1])),
+            5 => Self::JMPT(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
+                    InputParam::new(comp.mem[comp.ic+2], op_modes[2])),
+            6 => Self::JMPF(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
+                    InputParam::new(comp.mem[comp.ic+2], op_modes[2])),
+            7 => Self::LT(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
+                    InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
+                    OutputParam::new(comp.mem[comp.ic+3])),
+            8 => Self::EQ(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
+                    InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
+                    OutputParam::new(comp.mem[comp.ic+3])),
             99 => Self::STOP(),
             _ => Self::ERR(),
         }
@@ -95,15 +109,36 @@ impl Intcode {
 
     pub fn exec(&self, comp: &mut IntcodeComputer) -> Result<bool, Box<dyn Error>> {
         let mut c = true;
+        let ic = comp.ic;
+
         match self {
             Self::ADD(i, j, o) => o.set(comp, i.get(comp)? + j.get(comp)?),
             Self::MULT(i, j, o) => o.set(comp, i.get(comp)? * j.get(comp)?),
             Self::SET(o) => {let r = comp.read()?; o.set(comp, r)},
             Self::DISP(i) => comp.print(i.get(comp)?),
+            Self::JMPT(i, j) => (),
+            Self::JMPF(i, j) => (),
+            Self::LT(i, j, o) => {
+                if i.get(comp)? < j.get(comp)? {
+                    o.set(comp, 1)
+                } else {
+                    o.set(comp, 0)
+                }
+            },
+            Self::EQ(i, j, o) => {
+                if i.get(comp)? == j.get(comp)? {
+                    o.set(comp, 1)
+                } else {
+                    o.set(comp, 0)
+                }
+            },
             Self::STOP() => (c = false),
             Self::ERR() => return Err("invalid intcode".into()),
         };
-        comp.ic += self.len();
+
+        if comp.ic == ic {
+            comp.ic += self.len();
+        }
         Ok(c)
     }
 
@@ -113,6 +148,10 @@ impl Intcode {
             Self::MULT(_, _, _) => 4,
             Self::SET(_) => 2,
             Self::DISP(_) => 2,
+            Self::JMPT(_, _) => 3,
+            Self::JMPF(_, _) => 3,
+            Self::LT(_, _, _) => 4,
+            Self::EQ(_, _, _) => 4,
             _ => 0,
         }
     }
