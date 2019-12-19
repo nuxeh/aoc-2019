@@ -78,6 +78,7 @@ impl Intcode {
     pub fn get(comp: &IntcodeComputer) -> Self {
         let val = comp.mem[comp.ic];
         let op_modes = Self::get_opcode_and_param_modes(val);
+        println!("{:?} {:?}", val, op_modes);
         match op_modes[0] {
             1 => Self::ADD(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
@@ -117,12 +118,12 @@ impl Intcode {
     }
 
     fn get_opcode_and_param_modes(mut intcode: i64) -> [i64; 4] {
-        let c = intcode / 10000;
-        intcode -= c * 10000;
+        let a = intcode / 10000;
+        intcode -= a * 10000;
         let b = intcode / 1000;
         intcode -= b * 1000;
-        let a = intcode / 100;
-        intcode -= a * 100;
+        let c = intcode / 100;
+        intcode -= c * 100;
         [intcode, c, b, a]
     }
 }
