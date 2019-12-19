@@ -14,7 +14,11 @@ fn main() {
         process::exit(1);
     });
 
-    println!("{}", amp(&mem, 0, 1));
+    println!("{}", amp(&mem, 20000, 0));
+    println!("{}", amp(&mem, 20000, 1));
+    println!("{}", amp(&mem, 20000, 2));
+    println!("{}", amp(&mem, 20000, 3));
+    println!("{}", amp(&mem, 20000, 4));
 }
 
 fn amp(mem: &Vec<i64>, input: i64, phase: i64) -> i64 {
