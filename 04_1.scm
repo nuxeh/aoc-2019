@@ -10,27 +10,34 @@
       found))
 
 (define (valid? z)
-  (and (ascends? z) (contains-double? z #f)))
+  (and (ascends? z) (contains-double? z)))
 
-(define (contains-double? z r) #t)
-
-
+(define (contains-double? z)
+  (if (null? (cdr z))
+      #f
+      (if (equal? (car z) (car (cdr z)))
+	  #t
+	  (contains-double? (cdr z)))))
 
 (define (ascends? z)
   (if (null? (cdr z))
       #t
-      (if (< (car z) (car (cdr z)))
+      (if (<= (car z) (car (cdr z)))
 	  (ascends? (cdr z))
 	  #f)))
-
 
 (define (splitz n)
   (map char->integer (string->list (number->string n))))
 
 (display (ascends? '(1 2 3 4 5 6)))(newline)
 (display (ascends? '(1 2 3 7 5 6)))(newline)
+(display (contains-double? '(1 2 3 7 5 6)))(newline)
+(display (contains-double? '(1 2 3 5 5 6)))(newline)
 
 (display (splitz 1234567))(newline)
 
-(display (recurse start '()))
+(define result (recurse start '()))
+(display result)
+(newline)
+(display (length result))
 (newline)
