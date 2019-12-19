@@ -207,6 +207,7 @@ pub struct IntcodeComputer {
     ic: usize,
     inputs: VecDeque<i64>,
     pub outputs: Vec<i64>,
+    debug: bool,
 }
 
 impl IntcodeComputer {
@@ -216,6 +217,7 @@ impl IntcodeComputer {
             ic: 0,
             inputs: VecDeque::new(),
             outputs: vec!(),
+            debug: true,
         }
     }
 
@@ -224,8 +226,13 @@ impl IntcodeComputer {
         self
     }
 
-    pub fn input(&mut self, input: i64) -> &mut Self{
+    pub fn input(&mut self, input: i64) -> &mut Self {
         self.inputs.push_back(input);
+        self
+    }
+
+    pub fn debug(&mut self, status: bool) -> &mut Self {
+        self.debug = status;
         self
     }
 
@@ -237,9 +244,10 @@ impl IntcodeComputer {
         loop {
             // get intcode
             let intcode = Intcode::get(&self);
-            //println!("[{}] {:?}", self.ic, intcode);
+            if self.debug {
+                intcode.debug(self).unwrap();
+            };
             // exec intcode
-            intcode.debug(self).unwrap();
             if !intcode.exec(self)? {
                 break Ok(());
             }
@@ -384,4 +392,20 @@ fn day5_t() {
     let mut comp = IntcodeComputer::new().load_mem(mem.clone()).input(10).init();
     comp.run().unwrap();
     assert_eq!(0, comp.outputs.pop().unwrap());
+}
+
+#[test]
+#[ignore]
+fn day5_2() {
+    let mem = read_file("05_1_i1.ic").unwrap();
+    let mut comp = IntcodeComputer::new()
+        .load_mem(mem)
+        .input(5)
+        .init();
+
+    comp
+        .run()
+        .unwrap();
+
+    assert_eq!(3122865, comp.outputs.pop().unwrap());
 }
