@@ -1,3 +1,4 @@
+use std::collections::VecDeque;
 use std::fs;
 use std::path::Path;
 use std::error::Error;
@@ -96,8 +97,8 @@ impl Intcode {
         match self {
             Self::ADD(i, j, o) => o.set(comp, i.get(comp)? + j.get(comp)?),
             Self::MULT(i, j, o) => o.set(comp, i.get(comp)? * j.get(comp)?),
-            Self::SET(_) => (),
-            Self::DISP(_) => (),
+            Self::SET(o) => {let r = comp.read(); o.set(comp, r)},
+            Self::DISP(i) => comp.print(i.get(comp)?),
             Self::STOP() => (c = false),
             Self::ERR() => return Err("invalid intcode".into()),
         };
@@ -140,7 +141,7 @@ pub struct IntcodeComputer {
     pub mem: Vec<i64>,
     /// instruction counter
     ic: usize,
-    inputs: Vec<i64>,
+    inputs: VecDeque<i64>,
     outputs: Vec<i64>,
 }
 
@@ -149,7 +150,7 @@ impl IntcodeComputer {
         Self {
             mem: vec!(),
             ic: 0,
-            inputs: vec!(),
+            inputs: VecDeque::new(),
             outputs: vec!(),
         }
     }
@@ -160,7 +161,7 @@ impl IntcodeComputer {
     }
 
     pub fn input(&mut self, input: i64) -> &mut Self{
-        self.inputs.push(input);
+        self.inputs.push_back(input);
         self
     }
 
@@ -178,6 +179,14 @@ impl IntcodeComputer {
                 break Ok(());
             }
         }
+    }
+
+    fn read(&mut self) -> i64 {
+        42
+    }
+
+    fn print(&mut self, val: i64) {
+
     }
 }
 
