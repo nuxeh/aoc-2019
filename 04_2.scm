@@ -14,18 +14,16 @@
 
 (define (contains-double? z)
   (if (null? (cdr z))
-      #f
-      (if (equal? (car z) (car (cdr z)))
-	  (if (null? (cdr (cdr z)))
-	      #t
-	      (if (equal? (car z) (car (cddr z)))
-		  (if (null? (cdddr z))
-		      #f
-		      (if (null? (cddddr z))
-			  (if (equal? (car z) (cddd
-		      (contains-double? (cdddr z)))
-		  #t))
-	  (contains-double? (cdr z)))))
+      #t
+      (contains-double? (cdr z))))
+
+(define (count-nums z alist)
+  (if (null? z)
+      alist
+      (let ((count (assoc (car z) alist)))
+	(if count
+	    (count-nums (cdr z) (acons (car z) (1+ (cdr count)) alist))
+	    (count-nums (cdr z) (acons (car z) 1 alist))))))
 
 (define (ascends? z)
   (if (null? (cdr z))
@@ -41,6 +39,8 @@
 (display (ascends? '(1 2 3 7 5 6)))(newline)
 (display (contains-double? '(1 2 3 7 5 6)))(newline)
 (display (contains-double? '(1 2 3 5 5 6)))(newline)
+(display (valid? '(1 1 1 1 1 2)))(newline)
+(display (count-nums '(1 1 1 1 1 2) '()))(newline)
 
 (display (splitz 1234567))(newline)
 
