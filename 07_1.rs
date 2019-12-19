@@ -15,10 +15,19 @@ fn main() {
     });
 
     println!("{}", amp(&mem, 20000, 0));
-    println!("{}", amp(&mem, 20000, 1));
-    println!("{}", amp(&mem, 20000, 2));
-    println!("{}", amp(&mem, 20000, 3));
-    println!("{}", amp(&mem, 20000, 4));
+    let mut count = 0;
+    for a in 0..=4 {
+        for b in 0..=4 {
+            for c in 0..=4 {
+                for d in 0..=4 {
+                    for e in 0..=4 {
+                        count += 1;
+                    }
+                }
+            }
+        }
+    }
+    println!("{}", count);
 }
 
 fn amp(mem: &Vec<i64>, input: i64, phase: i64) -> i64 {
