@@ -14,8 +14,10 @@
 
 (define (contains-double? z)
   (if (null? (cdr z))
-      #t
-      (contains-double? (cdr z))))
+      #f
+      (if (equal? (car z) (car (cdr z)))
+	  #t
+	  (contains-double? (cdr z)))))
 
 (define (count-nums z alist)
   (if (null? z)
