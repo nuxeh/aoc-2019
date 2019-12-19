@@ -97,7 +97,7 @@ impl Intcode {
         match self {
             Self::ADD(i, j, o) => o.set(comp, i.get(comp)? + j.get(comp)?),
             Self::MULT(i, j, o) => o.set(comp, i.get(comp)? * j.get(comp)?),
-            Self::SET(o) => {let r = comp.read(); o.set(comp, r)},
+            Self::SET(o) => {let r = comp.read()?; o.set(comp, r)},
             Self::DISP(i) => comp.print(i.get(comp)?),
             Self::STOP() => (c = false),
             Self::ERR() => return Err("invalid intcode".into()),
@@ -181,8 +181,12 @@ impl IntcodeComputer {
         }
     }
 
-    fn read(&mut self) -> i64 {
-        42
+    fn read(&mut self) -> Result<i64, Box<dyn Error>> {
+        if let Some(i) = self.inputs.pop_front() {
+            Ok(i)
+        } else {
+            Err("no input available".into())
+        }
     }
 
     fn print(&mut self, val: i64) {
