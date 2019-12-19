@@ -16,7 +16,15 @@
   (if (null? (cdr z))
       #f
       (if (equal? (car z) (car (cdr z)))
-	  #t
+	  (if (null? (cdr (cdr z)))
+	      #t
+	      (if (equal? (car z) (car (cddr z)))
+		  (if (null? (cdddr z))
+		      #f
+		      (if (null? (cddddr z))
+			  (if (equal? (car z) (cddd
+		      (contains-double? (cdddr z)))
+		  #t))
 	  (contains-double? (cdr z)))))
 
 (define (ascends? z)
