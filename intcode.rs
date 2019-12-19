@@ -226,6 +226,7 @@ impl IntcodeComputer {
             if !intcode.exec(self)? {
                 break Ok(());
             }
+            println!("{:?}", self.mem);
         }
     }
 
@@ -269,4 +270,35 @@ fn day5() {
         .unwrap();
 
     assert_eq!(3122865, comp.outputs.pop().unwrap());
+}
+
+#[test]
+fn day5_2() {
+    let mem = vec!(3, 1, 1008, 21, 8, 20, 1005, 20, 22, 107, 8, 21, 20, 1006, 20, 31, 1106, 0, 6,
+                   98, 0, 0, 1002, 21, 125, 20, 4, 20, 1105, 1, 46, 104, 999, 1105, 1, 46, 101,
+                   1000, 1, 20, 4, 20, 1105, 1, 46, 98, 99);
+
+    let mut comp = IntcodeComputer::new()
+        .load_mem(mem.clone())
+        .input(2)
+        .init();
+
+    comp.run().unwrap();
+    assert_eq!(999, comp.outputs.pop().unwrap());
+
+    let mut comp = IntcodeComputer::new()
+        .load_mem(mem.clone())
+        .input(8)
+        .init();
+
+    comp.run().unwrap();
+    assert_eq!(1000, comp.outputs.pop().unwrap());
+
+    let mut comp = IntcodeComputer::new()
+        .load_mem(mem)
+        .input(10)
+        .init();
+
+    comp.run().unwrap();
+    assert_eq!(1001, comp.outputs.pop().unwrap());
 }
