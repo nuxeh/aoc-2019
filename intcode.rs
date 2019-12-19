@@ -74,6 +74,7 @@ pub enum Intcode {
     JMPF(InputParam, InputParam),
     LT(InputParam, InputParam, OutputParam),
     EQ(InputParam, InputParam, OutputParam),
+    ADJB(InputParam),
     STOP(),
     ERR(),
 }
@@ -102,6 +103,7 @@ impl Intcode {
             8 => Self::EQ(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
                     OutputParam::new(comp.mem[comp.ic+3])),
+            9 => Self::ADJB(InputParam::new(comp.mem[comp.ic+1], op_modes[1])),
             99 => Self::STOP(),
             _ => Self::ERR(),
         }
@@ -140,6 +142,7 @@ impl Intcode {
                     o.set(comp, 0)
                 }
             },
+            Self::ADJB(i) => comp.rel_base = i.get(comp)? as usize,
             Self::STOP() => (c = false),
             Self::ERR() => return Err("invalid intcode".into()),
         };
@@ -160,6 +163,7 @@ impl Intcode {
             Self::JMPF(_, _) => 3,
             Self::LT(_, _, _) => 4,
             Self::EQ(_, _, _) => 4,
+            Self::ADJB(_) => 2,
             _ => 0,
         }
     }
@@ -174,6 +178,7 @@ impl Intcode {
             Self::JMPF(i, j) => format!("{} {}", i.get(comp)?, j.get(comp)?),
             Self::LT(i, j, o) => format!("{} {} ({})", i.get(comp)?, j.get(comp)?, o.address),
             Self::EQ(i, j, o) => format!("{} {} ({})", i.get(comp)?, j.get(comp)?, o.address),
+            Self::ADJB(i) => format!("{}", i.get(comp)?),
             _ => "".to_string(),
         };
         eprintln!("[{}] {} {:?}", comp.ic, s, self);
@@ -205,6 +210,7 @@ pub struct IntcodeComputer {
     pub mem: Vec<i64>,
     /// instruction counter
     ic: usize,
+    rel_base: usize,
     inputs: VecDeque<i64>,
     pub outputs: Vec<i64>,
     debug: bool,
@@ -215,6 +221,7 @@ impl IntcodeComputer {
         Self {
             mem: vec!(),
             ic: 0,
+            rel_base: 0,
             inputs: VecDeque::new(),
             outputs: vec!(),
             debug: true,
