@@ -360,4 +360,28 @@ fn day5_t() {
     let mut comp = IntcodeComputer::new().load_mem(mem.clone()).input(9).init();
     comp.run().unwrap();
     assert_eq!(0, comp.outputs.pop().unwrap());
+
+    let mem = vec!(3, 9, 7, 9, 10, 9, 4, 9, 99, -1, 8);
+
+    let mut comp = IntcodeComputer::new().load_mem(mem.clone()).input(7).init();
+    comp.run().unwrap();
+    assert_eq!(1, comp.outputs.pop().unwrap());
+    let mut comp = IntcodeComputer::new().load_mem(mem.clone()).input(8).init();
+    comp.run().unwrap();
+    assert_eq!(0, comp.outputs.pop().unwrap());
+    let mut comp = IntcodeComputer::new().load_mem(mem.clone()).input(10).init();
+    comp.run().unwrap();
+    assert_eq!(0, comp.outputs.pop().unwrap());
+
+    let mem = vec!(3, 3, 1107, -1, 8, 3, 4, 3, 99);
+
+    let mut comp = IntcodeComputer::new().load_mem(mem.clone()).input(7).init();
+    comp.run().unwrap();
+    assert_eq!(1, comp.outputs.pop().unwrap());
+    let mut comp = IntcodeComputer::new().load_mem(mem.clone()).input(8).init();
+    comp.run().unwrap();
+    assert_eq!(0, comp.outputs.pop().unwrap());
+    let mut comp = IntcodeComputer::new().load_mem(mem.clone()).input(10).init();
+    comp.run().unwrap();
+    assert_eq!(0, comp.outputs.pop().unwrap());
 }
