@@ -82,7 +82,7 @@ impl Intcode {
     pub fn get(comp: &IntcodeComputer) -> Self {
         let val = comp.mem[comp.ic];
         let op_modes = Self::get_opcode_and_param_modes(val);
-        println!("{:?} {:?}", val, op_modes);
+        //println!("{:?} {:?}", val, op_modes);
         match op_modes[0] {
             1 => Self::ADD(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
@@ -164,6 +164,22 @@ impl Intcode {
         }
     }
 
+    fn debug(&self, comp: &IntcodeComputer) -> Result<(), Box<dyn Error>> {
+        let s = match self {
+            Self::ADD(i, j, o) => format!("{} {} ({})", i.get(comp)?, j.get(comp)?, o.address),
+            Self::MULT(i, j, o) => format!("{} {} ({})", i.get(comp)?, j.get(comp)?, o.address),
+            Self::SET(o) => format!("({})", o.address),
+            Self::DISP(i) => format!("{}", i.get(comp)?),
+            Self::JMPT(i, j) => format!("{} {}", i.get(comp)?, j.get(comp)?),
+            Self::JMPF(i, j) => format!("{} {}", i.get(comp)?, j.get(comp)?),
+            Self::LT(i, j, o) => format!("{} {} ({})", i.get(comp)?, j.get(comp)?, o.address),
+            Self::EQ(i, j, o) => format!("{} {} ({})", i.get(comp)?, j.get(comp)?, o.address),
+            _ => "".to_string(),
+        };
+        eprintln!("[{}] {} {:?}", comp.ic, s, self);
+        Ok(())
+    }
+
     fn get_opcode_and_param_modes(mut intcode: i64) -> [i64; 4] {
         let a = intcode / 10000;
         intcode -= a * 10000;
@@ -221,12 +237,13 @@ impl IntcodeComputer {
         loop {
             // get intcode
             let intcode = Intcode::get(&self);
-            println!("[{}] {:?}", self.ic, intcode);
+            //println!("[{}] {:?}", self.ic, intcode);
             // exec intcode
+            intcode.debug(self).unwrap();
             if !intcode.exec(self)? {
                 break Ok(());
             }
-            println!("{:?}", self.mem);
+            //println!("{:?}", self.mem);
         }
     }
 
