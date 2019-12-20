@@ -12,6 +12,7 @@
 			 (array-set! array #t x y))
 	   (set! x (1+ x))) d)))
 
+(define santa-width 10)
 (define lines 0)
 (define array #f)
 (define dim #f)
@@ -28,7 +29,7 @@
     (set! lines (1+ lines))))
 
 (define (scan-y i j d)
-  (if (< d 2)
+  (if (< d santa-width)
       (if (array-ref array i j)
 	  (if (< j (1- dim))
 	      (scan-y i (1+ j) (1+ d))
@@ -37,7 +38,7 @@
       #t))
 
 (define (scan-x i j d)
-  (if (< d 2)
+  (if (< d santa-width)
       (if (scan-y i j 0)
 	  (if (< i (1- dim))
 	      (scan-x (1+ i) j (1+ d))
@@ -63,9 +64,16 @@
 	(newline)
 	(array-print array (1+ j)))))
 
+(define hits '())
+
 (array-print array 0)
 (array-index-map! array find-10x10)
 (display (array-dimensions array))(newline)
 (array-print array 0)
 
+(define (get-hits i j)
+  (if (array-ref array i j)
+      (set! hits (append hits (list (+ (* i 10000) j))))))
 
+(array-index-map! array get-hits)
+(display hits)(newline)
