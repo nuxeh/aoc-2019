@@ -18,6 +18,7 @@ fn main() {
     let mut comp = IntcodeComputer::new()
         .load_mem_pad(&mem)
         .input(input.parse().unwrap())
+        .debug(false)
         .init();
 
     comp.run().unwrap_or_else(|e| {
