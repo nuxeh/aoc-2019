@@ -32,14 +32,17 @@ fn main() {
         process::exit(1);
     });
 
+    let mut c = 0;
     for y in 0..50 {
         for x in 0..50 {
             if get_coord(&mem, x, y) {
                 print!("#");
+                c += 1;
             } else {
                 print!(".");
             }
         }
         print!("\n");
     };
+    println!("{}", c);
 }
