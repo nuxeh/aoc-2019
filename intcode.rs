@@ -44,7 +44,7 @@ impl InputParam {
                 }
             },
             ParamMode::Relative => {
-                let addr = comp.rel_base + self.value as usize;
+                let addr = (comp.rel_base as i64 + self.value) as usize;
                 if let Some(v) = comp.mem.get(addr) {
                     Ok(v.clone())
                 } else {
@@ -73,7 +73,7 @@ impl OutputParam {
                 comp.mem[self.address as usize] = value;
             },
             ParamMode::Relative => {
-                let addr = comp.rel_base + self.address as usize;
+                let addr = (comp.rel_base as i64 + self.address) as usize;
                 comp.mem[addr] = value;
             },
             _ => eprintln!("unimplemented output parameter mode"),
@@ -160,7 +160,9 @@ impl Intcode {
                     o.set(comp, 0)
                 }
             },
-            Self::ADJB(i) => comp.rel_base = i.get(comp)? as usize,
+            Self::ADJB(i) => {
+                comp.rel_base = (comp.rel_base as i64 + i.get(comp)?) as usize;
+            },
             Self::STOP() => (c = false),
             Self::ERR() => return Err("invalid intcode".into()),
         };
@@ -256,7 +258,6 @@ impl IntcodeComputer {
         let pad_length = prog_length * 15 as usize;
         self.mem = mem.to_owned();
         self.mem.extend(vec![0; pad_length]);
-        println!("{:?}", self.mem);
         self
     }
 
