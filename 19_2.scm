@@ -63,7 +63,8 @@
 	(newline)
 	(array-print array (1+ j)))))
 
-(display (array-index-map! array find-10x10))(newline)
+(array-print array 0)
+(array-index-map! array find-10x10)
 (display (array-dimensions array))(newline)
 (array-print array 0)
 
