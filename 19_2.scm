@@ -2,10 +2,15 @@
 
 (define (char->bit x)
   (if (equal? x #\#)
-      #t
-      #f))
+      1
+      0))
+
+(define (process-line l)
+  (let ((dim (string-length l)))
+    (let ((d (map char->bit (string->list l))))
+      d)))
 
 (do ((c (read-line) (read-line)))
   ((eof-object? c) 'done)
-  (let ((d (map char->bit (string->list c))))
+  (let ((d (process-line c)))
     (display d)(newline)))
