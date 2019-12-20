@@ -14,7 +14,7 @@
 			   (array-set! tractor #t x y)))
 	   (set! x (1+ x))) d)))
 
-(define santa-width 10)
+(define santa-width 5)
 (define lines 0)
 (define array #f)
 (define tractor #f)
