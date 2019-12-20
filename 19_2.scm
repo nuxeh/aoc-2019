@@ -2,4 +2,5 @@
 
 (do ((c (read-line) (read-line)))
   ((eof-object? c) 'done)
-  (display c)(newline))
+  (let ((d (string->list c)))
+    (display d)(newline)))
