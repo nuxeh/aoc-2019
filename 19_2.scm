@@ -27,11 +27,21 @@
 
 (display array)(newline)
 
-(define (scan-y i j)#t)
+(define (scan-y i j d)
+  (if (array-ref array i j)
+      (if (< d 10)
+	  (scan-y i (1+ j) (1 +d))
+	  #t)
+      #f))
 
-(define (scan-x i j)#t)
+(define (scan-x i j d)
+  (if (array-ref array i j)
+      (if (scan-y i j 0)
+	  (scan-x (+1 i) j (1+ d))
+	  #f)
+      #f))
 
 (define (find-10x10 i j)
-  (display (array-ref array i j))(newline))
+  (scan-x i j 0))
 
 (display (array-index-map! array find-10x10))(newline)
