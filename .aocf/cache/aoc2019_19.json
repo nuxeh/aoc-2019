@@ -1,0 +1,14 @@
+{
+  "year": 2019,
+  "day": 19,
+  "level": "first",
+  "title": "Tractor Beam",
+  "stars": null,
+  "input": null,
+  "brief": {
+    "first": "window.addEventListener('click', function(e,s,r){if(e.target.nodeName==='CODE'&&e.detail===3){s=window.getSelection();s.removeAllRanges();r=document.createRange();r.selectNodeContents(e.target);s.addRange(r);}});\n\n\\-\\-\\- Day 19: Tractor Beam \\-\\-\\-\n----------\n\nUnsure of the state of Santa's ship, you borrowed the tractor beam technology from Triton. Time to test it out.\n\nWhen you're safely away from anything else, you activate the tractor beam, but nothing happens. It's hard to tell whether it's working if there's nothing to use it on. Fortunately, your ship's drone system can be configured to deploy a drone to specific coordinates and then check whether it's being pulled. There's even an [Intcode](9) program (your puzzle input) that gives you access to the drone system.\n\nThe program uses two input instructions to request the *X and Y position* to which the drone should be deployed. Negative numbers are invalid and will confuse the drone; all numbers should be *zero or positive*.\n\nThen, the program will output whether the drone is *stationary* (`0`) or *being pulled by something* (`1`). For example, the coordinate X=`0`, Y=`0` is directly in front of the tractor beam emitter, so the drone control program will always report `1` at that location.\n\nTo better understand the tractor beam, it is important to *get a good picture* of the beam itself. For example, suppose you scan the 10x10 grid of points closest to the emitter:\n\n```\n       X\n  0->      9\n 0#.........\n |.#........\n v..##......\n  ...###....\n  ....###...\nY .....####.\n  ......####\n  ......####\n  .......###\n 9........##\n\n```\n\nIn this example, the *number of points affected by the tractor beam* in the 10x10 area closest to the emitter is `*27*`.\n\nHowever, you'll need to scan a larger area to *understand the shape* of the beam. *How many points are affected by the tractor beam in the 50x50 area closest to the emitter?* (For each of X and Y, this will be `0` through `49`.)\n\nTo begin, [get your puzzle input](19/input).\n\nAnswer:\n\nYou can also [Shareon [Twitter](https://twitter.com/intent/tweet?text=%22Tractor+Beam%22+%2D+Day+19+%2D+Advent+of+Code+2019&url=https%3A%2F%2Fadventofcode%2Ecom%2F2019%2Fday%2F19&related=ericwastl&hashtags=AdventOfCode) [Mastodon](javascript:void(0);)] this puzzle."
+  },
+  "solution": {},
+  "cache_path": null,
+  "cookie_path": "/home/ed/git/aoc-2019/.aocf/cookie"
+}
