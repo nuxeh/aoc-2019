@@ -28,7 +28,7 @@
     (set! lines (1+ lines))))
 
 (define (scan-y i j d)
-  (if (< d 10)
+  (if (< d 2)
       (if (array-ref array i j)
 	  (if (< j (1- dim))
 	      (scan-y i (1+ j) (1+ d))
@@ -37,10 +37,10 @@
       #t))
 
 (define (scan-x i j d)
-  (if (< d 10)
+  (if (< d 2)
       (if (scan-y i j 0)
 	  (if (< i (1- dim))
-	      (scan-x (+1 i) j (1+ d))
+	      (scan-x (1+ i) j (1+ d))
 	      #f)
 	  #f)
       #t))
