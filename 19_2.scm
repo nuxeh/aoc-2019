@@ -16,13 +16,22 @@
 (define lines 0)
 (define array #f)
 
+;read input
 (do ((c (read-line) (read-line)))
   ((eof-object? c) 'done)
   (let ((dim (string-length c)))
     (if (not array)
 	(set! array (make-array #f dim dim)))
     (process-line lines array c)
-    (display c)(newline)
     (set! lines (1+ lines))))
 
 (display array)(newline)
+
+(define (scan-y i j)#t)
+
+(define (scan-x i j)#t)
+
+(define (find-10x10 i j)
+  (display (array-ref array i j))(newline))
+
+(display (array-index-map! array find-10x10))(newline)
