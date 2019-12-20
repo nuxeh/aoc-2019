@@ -9,12 +9,15 @@
   (define x 0)
   (let ((d (map char->bit (string->list l))))
     (map (lambda (e) (if e
-			 (array-set! array #t x y))
+			 (begin
+			   (array-set! array #t x y)
+			   (array-set! tractor #t x y)))
 	   (set! x (1+ x))) d)))
 
 (define santa-width 10)
 (define lines 0)
 (define array #f)
+(define tractor #f)
 (define dim #f)
 
 ;read input
@@ -25,11 +28,13 @@
 	(set! dim wid))
     (if (not array)
 	(set! array (make-array #f wid wid)))
+    (if (not tractor)
+	(set! tractor (make-array #f wid wid)))
     (process-line lines array c)
     (set! lines (1+ lines))))
 
 (define (scan-y i j d)
-  (if (< d santa-width)
+  (if (<= d santa-width)
       (if (array-ref array i j)
 	  (if (< j (1- dim))
 	      (scan-y i (1+ j) (1+ d))
@@ -38,7 +43,7 @@
       #t))
 
 (define (scan-x i j d)
-  (if (< d santa-width)
+  (if (<= d santa-width)
       (if (scan-y i j 0)
 	  (if (< i (1- dim))
 	      (scan-x (1+ i) j (1+ d))
@@ -54,7 +59,9 @@
       (begin
 	(if (array-ref array i j)
 	    (display #\#)
-	    (display #\.))
+	    (if (array-ref tractor i j)
+		(display #\~)
+		(display #\.)))
 	(print-line array (1+ i) j))))
 
 (define (array-print array j)
@@ -66,8 +73,7 @@
 
 (define hits '())
 
-(array-print array 0)
-(array-index-map! array find-10x10)
+(array-index-map! array find-10x10) ;find 10x10 filled areas
 (display (array-dimensions array))(newline)
 (array-print array 0)
 
@@ -75,5 +81,5 @@
   (if (array-ref array i j)
       (set! hits (append hits (list (+ (* i 10000) j))))))
 
-(array-index-map! array get-hits)
+(array-index-map! array get-hits) ;convert to coordinates
 (display hits)(newline)
