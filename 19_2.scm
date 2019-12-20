@@ -14,7 +14,7 @@
 			   (array-set! tractor #t x y)))
 	   (set! x (1+ x))) d)))
 
-(define santa-width 5)
+(define santa-width 100)
 (define lines 0)
 (define array #f)
 (define tractor #f)
@@ -51,8 +51,12 @@
 	  #f)
       #t))
 
-(define (find-10x10 i j)
-  (scan-x i j 0))
+(define found #f)
+
+(define (find-region i j)
+  (if (not found)
+      (if (scan-x i j 0)
+	  (set! found (+ (* i 10000) j)))))
 
 (define (print-line array i j)
   (if (< i dim)
@@ -73,13 +77,14 @@
 
 (define hits '())
 
-(array-index-map! array find-10x10) ;find 10x10 filled areas
+(array-index-map! array find-region) ;find 10x10 filled areas
 (display (array-dimensions array))(newline)
-(array-print array 0)
+;(array-print array 0)
 
 (define (get-hits i j)
   (if (array-ref array i j)
       (set! hits (append hits (list (+ (* i 10000) j))))))
 
-(array-index-map! array get-hits) ;convert to coordinates
-(display hits)(newline)
+;(array-index-map! array get-hits) ;convert to coordinates
+;(display hits)(newline)
+(display found)(newline)
