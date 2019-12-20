@@ -253,8 +253,10 @@ impl IntcodeComputer {
 
     pub fn load_mem_pad(&mut self, mem: &[i64]) -> &mut Self {
         let prog_length = mem.len();
-        let mem_length = prog_length * 10 as usize;
-        self.mem = vec![0; mem_length];
+        let pad_length = prog_length * 15 as usize;
+        self.mem = mem.to_owned();
+        self.mem.extend(vec![0; pad_length]);
+        println!("{:?}", self.mem);
         self
     }
 
