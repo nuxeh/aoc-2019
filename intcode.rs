@@ -43,6 +43,14 @@ impl InputParam {
                     Err("invalid address".into())
                 }
             },
+            ParamMode::Relative => {
+                let addr = comp.rel_base + self.value as usize;
+                if let Some(v) = comp.mem.get(addr) {
+                    Ok(v.clone())
+                } else {
+                    Err("invalid address".into())
+                }
+            },
             _ => Err("unimplemented input parameter type".into()),
         }
     }
