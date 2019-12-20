@@ -59,15 +59,25 @@ impl InputParam {
 #[derive(Debug)]
 pub struct OutputParam {
     address: i64,
+    mode: ParamMode,
 }
 
 impl OutputParam {
-    fn new(address: i64) -> Self {
-        OutputParam {address}
+    fn new(address: i64, mode: i64) -> Self {
+        OutputParam {address, mode: ParamMode::from(mode)}
     }
 
     fn set(&self, comp: &mut IntcodeComputer, value: i64) {
-        comp.mem[self.address as usize] = value;
+        match self.mode {
+            ParamMode::Position => {
+                comp.mem[self.address as usize] = value;
+            },
+            ParamMode::Relative => {
+                let addr = comp.rel_base + self.address as usize;
+                comp.mem[addr] = value;
+            },
+            _ => eprintln!("unimplemented output parameter mode"),
+        }
     }
 }
 
@@ -95,11 +105,11 @@ impl Intcode {
         match op_modes[0] {
             1 => Self::ADD(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
-                    OutputParam::new(comp.mem[comp.ic+3])),
+                    OutputParam::new(comp.mem[comp.ic+3], op_modes[3])),
             2 => Self::MULT(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
-                    OutputParam::new(comp.mem[comp.ic+3])),
-            3 => Self::SET(OutputParam::new(comp.mem[comp.ic+1])),
+                    OutputParam::new(comp.mem[comp.ic+3], op_modes[3])),
+            3 => Self::SET(OutputParam::new(comp.mem[comp.ic+1], op_modes[1])),
             4 => Self::DISP(InputParam::new(comp.mem[comp.ic+1], op_modes[1])),
             5 => Self::JMPT(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2])),
@@ -107,10 +117,10 @@ impl Intcode {
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2])),
             7 => Self::LT(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
-                    OutputParam::new(comp.mem[comp.ic+3])),
+                    OutputParam::new(comp.mem[comp.ic+3], op_modes[3])),
             8 => Self::EQ(InputParam::new(comp.mem[comp.ic+1], op_modes[1]),
                     InputParam::new(comp.mem[comp.ic+2], op_modes[2]),
-                    OutputParam::new(comp.mem[comp.ic+3])),
+                    OutputParam::new(comp.mem[comp.ic+3], op_modes[3])),
             9 => Self::ADJB(InputParam::new(comp.mem[comp.ic+1], op_modes[1])),
             99 => Self::STOP(),
             _ => Self::ERR(),
