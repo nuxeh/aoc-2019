@@ -44,5 +44,5 @@ fn main() {
         }
         print!("\n");
     };
-    println!("{}", c);
+    eprintln!("{}", c);
 }
