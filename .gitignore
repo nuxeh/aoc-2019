@@ -1,3 +1,5 @@
 *.sw*
 /.aocf/cookie
 /test
+*_1
+*_2
