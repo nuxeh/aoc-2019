@@ -430,6 +430,21 @@ fn day5_t() {
 }
 
 #[test]
+fn day9() {
+    let mem = read_file("09_1_i1.ic").unwrap();
+    let mut comp = IntcodeComputer::new()
+        .load_mem_pad(&mem)
+        .input(1)
+        .init();
+
+    comp
+        .run()
+        .unwrap();
+
+    assert_eq!(2870072642, comp.outputs.pop().unwrap());
+}
+
+#[test]
 #[ignore]
 fn day5_2() {
     let mem = read_file("05_1_i1.ic").unwrap();
