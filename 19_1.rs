@@ -26,6 +26,7 @@ fn get_coord(mem: &[i64], x: i64, y: i64) -> bool {
 
 fn main() {
     let in_path: PathBuf = env::args().into_iter().skip(1).take(1).collect();
+    let dim: i64 = env::args().into_iter().skip(2).take(1).collect::<String>().parse().unwrap();
 
     let mem = intcode::read_file(&in_path).unwrap_or_else(|e| {
         eprintln!("error: {}", e);
@@ -33,8 +34,8 @@ fn main() {
     });
 
     let mut c = 0;
-    for y in 0..50 {
-        for x in 0..50 {
+    for y in 0..dim {
+        for x in 0..dim {
             if get_coord(&mem, x, y) {
                 print!("#");
                 c += 1;
