@@ -1,9 +1,8 @@
+mod intcode;
+
 use std::env;
 use std::process;
 use std::path::PathBuf;
-
-mod intcode;
-
 use intcode::IntcodeComputer;
 
 fn get_coord(mem: &[i64], x: i64, y: i64) -> bool {
