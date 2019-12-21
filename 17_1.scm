@@ -29,10 +29,14 @@
 (for-each display-line input-y)
 
 (define (x-intersect line x y)
-  (if (not (null? (caddr line)))
-      (if (and (eq? (car line) #\#) (eq? (cadr line) #\*) (eq? (caddr line) #\#))
-	  (display "high five")(newline))
-      (x-intersect (cdr line) (1+ x) y)))
+; (display line)(newline)
+  (if (not (null? (cddr line)))
+      (begin
+	(if (and (eq? (car line) #\#) (eq? (cadr line) #\*) (eq? (caddr line) #\#))
+	    (begin
+	      (display x)(display ", ")
+	      (display y)(newline)))
+	(x-intersect (cdr line) (1+ x) y))))
 
 (define y 0)
 (for-each (lambda (line) (x-intersect line 0 y)(set! y (1+ y))) input-y) 
