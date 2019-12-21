@@ -7,8 +7,6 @@
   ((eof-object? c) 'done)
   (set! input (append input (list (string->list c)))))
 
-(display input)(newline)
-
 (define (is-intersection? line)#t)
 
 ;(define (x-intersect lline)
@@ -16,20 +14,21 @@
 ;      (if (and (equal? (car lline) #\#) (equal? (cadr lline) #\#) (equal? (caddr lline) #\#))
 ;	  (set! (cadr lline) #\#)
 
-(define (y-intersect elems)
-  (if (and (eq? (car elems) #\#) (eq? (cadr elems) #\#) (eq? (caddr) #\#))
-      (list (car elems) #\* (caddr elems))
-      elems))
+(define (y-intersect e f g)
+  (if (and (eq? e #\#) (eq? f #\#) (eq? g #\#))
+      #\*
+      f))
 
-(define (process-line lines)
+(define (process-line lines res)
   (if (not (null? (caddr lines)))
       (begin
-	(map y-intersect (car lines) (cadr lines) (caddr lines))
-	(process-line (cadddr lines)))))
+	(let ((r (map y-intersect (car lines) (cadr lines) (caddr lines))))
+	  (process-line (cdr lines) (append res (list r)))))
+      res))
 
 (define (display-line line)
   (for-each (lambda (c) (display c)) line)
   (newline))
 
-(process-line input)
 (for-each display-line input)
+(for-each display-line (process-line input '()))
