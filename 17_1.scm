@@ -24,4 +24,15 @@
   (newline))
 
 (for-each display-line input)
-(for-each display-line (process-line input '()))
+
+(define input-y (process-line input '()))
+(for-each display-line input-y)
+
+(define (x-intersect line x y)
+  (if (not (null? (caddr line)))
+      (if (and (eq? (car line) #\#) (eq? (cadr line) #\*) (eq? (caddr line) #\#))
+	  (display "high five")(newline))
+      (x-intersect (cdr line) (1+ x) y)))
+
+(define y 0)
+(for-each (lambda (line) (x-intersect line 0 y)(set! y (1+ y))) input-y) 
