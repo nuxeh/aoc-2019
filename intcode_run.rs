@@ -8,7 +8,7 @@ use intcode::IntcodeComputer;
 
 fn flag(flag: &str) -> bool {
     for arg in env::args() {
-        if arg.contains(flag) {
+        if arg == flag {
             return true;
         }
     }
