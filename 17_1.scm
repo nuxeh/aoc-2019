@@ -7,16 +7,23 @@
   ((eof-object? c) 'done)
   (set! input (append input (list (string->list c)))))
 
-(define (y-intersect e f g)
-  (if (and (eq? e #\#) (eq? f #\#) (eq? g #\#))
-      #\*
+(define (intersect e f g mark)
+  (if (and (eq? e #\#) (not (eq? f #\.)) (eq? g #\#))
+      mark
       f))
+
+(define (y-intersect a b c)
+  (intersect a b c #\*))
+
+(define (x-intersect a b c)
+  (intersect a b c #\0))
 
 (define (process-line lines res)
   (if (not (null? (caddr lines)))
       (begin
 	(let ((r (map y-intersect (car lines) (cadr lines) (caddr lines))))
-	  (process-line (cdr lines) (append res (list r)))))
+	  (let ((s (map x-intersect r (append (cdr r) (list 0)) (append (cddr r) (list 0 0)))))
+	    (process-line (cdr lines) (append res (list s))))))
       res))
 
 (define (display-line line)
