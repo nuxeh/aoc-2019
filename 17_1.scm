@@ -1,4 +1,5 @@
 (use-modules (ice-9 rdelim)) ;read-line
+(use-modules (srfi srfi-1))  ;map with different length lists
 
 (define input '())
 
@@ -22,7 +23,7 @@
   (if (not (null? (caddr lines)))
       (begin
 	(let ((r (map y-intersect (car lines) (cadr lines) (caddr lines))))
-	  (let ((s (map x-intersect r (append (cdr r) (list 0)) (append (cddr r) (list 0 0)))))
+	  (let ((s (map x-intersect r (cdr r) (cddr r))))
 	    (process-line (cdr lines) (append res (list s))))))
       res))
 
