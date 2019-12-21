@@ -19,12 +19,18 @@
 (define (x-intersect a b c)
   (intersect a b c #\0))
 
+(define (xy-intersect a b)
+  (if (and (eq? a #\*) (eq? b #\0))
+      #\x
+      a))
+
 (define (process-line lines res)
   (if (not (null? (caddr lines)))
       (begin
 	(let ((r (map y-intersect (car lines) (cadr lines) (caddr lines))))
-	  (let ((s (map x-intersect r (cdr r) (cddr r))))
-	    (process-line (cdr lines) (append res (list s))))))
+	  (let ((s (map x-intersect r (append (cdr r) (list #\.)) (append (cddr r) (list #\. #\.)))))
+	    (let ((t (map xy-intersect r s)))
+	      (process-line (cdr lines) (append res (list t)))))))
       res))
 
 (define (display-line line)
