@@ -28,9 +28,9 @@
   (if (not (null? (caddr lines)))
       (begin
 	(let ((r (map y-intersect (car lines) (cadr lines) (caddr lines))))
-	  (let ((s (map x-intersect r (append (cdr r) (list #\.)) (append (cddr r) (list #\. #\.)))))
-	    (let ((t (map xy-intersect r s)))
-	      (process-line (cdr lines) (append res (list t)))))))
+	  (let ((s (map x-intersect r (cdr r) (cddr r))))
+	    (let ((t (map xy-intersect s r)))
+	      (process-line (cdr lines) (append res (list r)))))))
       res))
 
 (define (display-line line)
@@ -55,6 +55,6 @@
 	      (display y)(newline)))
 	(x-intersect (cdr line) (1+ x) y))))
 
-(define y 0)
-(for-each (lambda (line) (x-intersect line 0 y)(set! y (1+ y))) input-y)
+(define y 1)
+(for-each (lambda (line) (x-intersect line 1 y)(set! y (1+ y))) input-y)
 (display alignment)(newline) ;print alignment sum
