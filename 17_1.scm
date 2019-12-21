@@ -7,13 +7,6 @@
   ((eof-object? c) 'done)
   (set! input (append input (list (string->list c)))))
 
-(define (is-intersection? line)#t)
-
-;(define (x-intersect lline)
-;  (if (not (null? (cadr lline)))
-;      (if (and (equal? (car lline) #\#) (equal? (cadr lline) #\#) (equal? (caddr lline) #\#))
-;	  (set! (cadr lline) #\#)
-
 (define (y-intersect e f g)
   (if (and (eq? e #\#) (eq? f #\#) (eq? g #\#))
       #\*
