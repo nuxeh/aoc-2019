@@ -32,15 +32,11 @@
 (define phases (gen-phases in))
 (display phases)(newline)
 
-(define (proc ph i)
-  (display ph)(newline)
-  (display i)(newline)
-  (fold (lambda (q j a)
-  (display "  ")(display a)(newline)
-  (display q)(newline)
-  (display j)(newline)
+(define (get-digit n)
+  (- n (* 10 (floor (/ n 10)))))
 
-	  (+ a (* q j))) 0 ph i))
+(define (proc ph i)
+  (get-digit (abs (fold (lambda (q j a) (+ a (* q j))) 0 i ph))))
 
 (define (calc-phase phss input)
   (map (lambda (p) (proc p input)) phss))
