@@ -30,7 +30,7 @@
   (map (lambda (_) (set! p (1+ p))(gen-phase p l 0 0 '())) input))
 
 (define phases (gen-phases in))
-(display phases)(newline)
+;(display phases)(newline)
 
 (define (get-digit n)
   (- n
@@ -46,7 +46,12 @@
 (define (calc-phase phss input)
   (map (lambda (p) (proc p input)) phss))
 
-(display (calc-phase phases in))
+;(display (calc-phase phases in))(newline)
 
-(do ((i 0 (1+ i))) ((> i 99))
-  (display i))
+(define cur in)
+(display "[0]")(display cur)(newline)
+
+(do ((i 1 (1+ i))) ((> i 100))
+  (set! cur (calc-phase phases cur))
+  (display #\[)(display i)(display #\])
+  (display cur)(newline))
