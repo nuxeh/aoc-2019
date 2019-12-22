@@ -18,12 +18,17 @@
 0  0  0  0  1  1  1  1  0  0  0  0
 !#
 
-(define (gen-phase n) n)
+(define (gen-phase n l len step res)
+  (if (< len l)
+      (begin
+	(gen-phase n l (1+ len) step (append res (make-list n (list-ref cycle step)))))
+      res))
+
   
 
 (define (gen-phases input)
   (define p 0)
-  (map (lambda (_) (set! p (1+ p))(gen-phase p)) input))
+  (map (lambda (_) (set! p (1+ p))(gen-phase p l 0 0 '())) input))
 
 (define phases (gen-phases in))
 (display phases)(newline)
