@@ -47,3 +47,6 @@
   (map (lambda (p) (proc p input)) phss))
 
 (display (calc-phase phases in))
+
+(do ((i 0 (1+ i))) ((> i 99))
+  (display i))
