@@ -19,11 +19,11 @@
 !#
 
 (define (gen-phase n l len step res)
-  (set! step (floor (modulo (1+ step) 4)))
-  (if (< len l)
+  (define step' (floor (modulo (1+ step) 4)))
+  (if (<= len l)
       (begin
-	(gen-phase n l (+ len n) step (append res (make-list n (list-ref cycle step)))))
-      res))
+	(gen-phase n l (+ len n) step' (append res (make-list n (list-ref cycle step)))))
+      (cdr res)))
 
   
 
