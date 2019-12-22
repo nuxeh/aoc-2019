@@ -30,15 +30,17 @@
   (map (lambda (_) (set! p (1+ p))(gen-phase p l 0 0 '())) input))
 
 (define phases (gen-phases in))
-;(display phases)(newline)
+(display phases)(newline)
 
-(define (get-digit n)
-  (- n
-     (* 10 (floor (/ n 10)))
-     (* 100 (floor (/ n 100)))
-     (* 1000 (floor (/ n 1000)))
-     (* 10000 (floor (/ n 10000)))
-     (* 100000 (floor (/ n 100000)))))
+(define (get-digit m)
+  (define n m)
+  (set! n (- n (* 1000000 (floor (/ n 1000000)))))
+  (set! n (- n (* 100000 (floor (/ n 100000)))))
+  (set! n (- n (* 10000 (floor (/ n 10000)))))
+  (set! n (- n (* 1000 (floor (/ n 1000)))))
+  (set! n (- n (* 100 (floor (/ n 100)))))
+  (set! n (- n (* 10 (floor (/ n 10)))))
+  n)
 
 (define (proc ph i)
   (get-digit (abs (fold (lambda (q j a) (+ a (* q j))) 0 i ph))))
@@ -52,6 +54,7 @@
 (display "[0]")(display cur)(newline)
 
 (do ((i 1 (1+ i))) ((> i 100))
-  (set! cur (calc-phase phases cur))
+  (let ((new (calc-phase phases cur)))
+    (set! cur new))
   (display #\[)(display i)(display #\])
   (display cur)(newline))
