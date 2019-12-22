@@ -25,8 +25,6 @@
 	(gen-phase n l (+ len n) step' (append res (make-list n (list-ref cycle step)))))
       (cdr res)))
 
-  
-
 (define (gen-phases input)
   (define p 0)
   (map (lambda (_) (set! p (1+ p))(gen-phase p l 0 0 '())) input))
@@ -34,7 +32,3 @@
 (define phases (gen-phases in))
 (display phases)(newline)
 
-(define (gen-phase p len cp cv res)
-  (if (<= cp p)
-      (gen-phase (1+ p) nv res)
-      (cdr res)))
