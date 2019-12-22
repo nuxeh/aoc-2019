@@ -33,7 +33,12 @@
 (display phases)(newline)
 
 (define (get-digit n)
-  (- n (* 10 (floor (/ n 10)))))
+  (- n
+     (* 10 (floor (/ n 10)))
+     (* 100 (floor (/ n 100)))
+     (* 1000 (floor (/ n 1000)))
+     (* 10000 (floor (/ n 10000)))
+     (* 100000 (floor (/ n 100000)))))
 
 (define (proc ph i)
   (get-digit (abs (fold (lambda (q j a) (+ a (* q j))) 0 i ph))))
