@@ -58,3 +58,6 @@
     (set! cur new))
   (display #\[)(display i)(display #\])
   (display cur)(newline))
+
+(display (take cur 8))(newline)
+(map display (take cur 8))
