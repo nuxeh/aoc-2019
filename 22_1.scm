@@ -72,4 +72,13 @@
 
 ;(display instructions)(newline)
 (for-each map-ins instructions)
-(display cur)
+(display cur)(newline)
+
+(define (find-2019 p pos)
+  (if (null? p)
+      -1
+      (if (eq? (car p) 2019)
+	  pos
+	  (find-2019 (cdr p) (1+ pos)))))
+
+(display (find-2019 cur 0))
