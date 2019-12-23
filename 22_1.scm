@@ -47,12 +47,14 @@
 (display (deal-with-inc 3 test-pack 10))(newline)
 
 (define (map-ins i)
-  (define param (last i))
+  (define param (string->number (last i)))
   (if (equal? (car i) "deal")
       (if (equal? (cadr i) "into")
 	  (display "deal-into\n")
 	  (display "deal-with\n"))
-      (display "cut\n")))
+      (if (> param 0)
+	  (display "cut-pos\n")
+	  (display "cut-neg\n"))))
 
 (define instructions '())
 (do ((s (read-line) (read-line)))
