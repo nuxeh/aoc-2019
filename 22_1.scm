@@ -46,15 +46,20 @@
 
 (display (deal-with-inc 3 test-pack 10))(newline)
 
+(define cur pack)
+(display cur)
+
 (define (map-ins i)
+  (define cur' '())
   (define param (string->number (last i)))
   (if (equal? (car i) "deal")
       (if (equal? (cadr i) "into")
-	  (display "deal-into\n")
-	  (display "deal-with\n"))
+	  (set! cur' (deal-into cur))
+	  (set! cur' (deal-with-inc param cur pack-size)))
       (if (> param 0)
-	  (display "cut-pos\n")
-	  (display "cut-neg\n"))))
+	  (set! cur' (cut-cards-pos param cur))
+	  (set! cur' (cut-cards-neg (abs param) cur pack-size))))
+  (set! cur cur'))
 
 (define instructions '())
 (do ((s (read-line) (read-line)))
@@ -64,3 +69,4 @@
 
 (display instructions)(newline)
 (for-each map-ins instructions)
+(display cur)
