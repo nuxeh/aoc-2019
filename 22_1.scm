@@ -1,14 +1,15 @@
-(use-modules (srfi srfi-1)) ;split-at
+(use-modules (srfi srfi-1))  ;split-at
 (use-modules (srfi srfi-11)) ;let-values
+(use-modules (ice-9 rdelim)) ;read-line
 
-(define pack-size (read))
+(define pack-size 10007)
 
 (define (make-pack n c pack)
   (if (< c n)
       (make-pack n (1+ c) (append pack (list c)))
       pack))
 
-(display (make-pack pack-size 0 '()))(newline)
+(define pack (make-pack pack-size 0 '()))
 (define test-pack (make-pack 10 0 '()))
 
 ;deal into new stack
@@ -44,3 +45,20 @@
   (deal-with-inc-1 n p l 0 (make-list l #f)))
 
 (display (deal-with-inc 3 test-pack 10))(newline)
+
+(define (map-ins i)
+  (define param (last i))
+  (if (equal? (car i) "deal")
+      (if (equal? (cadr i) "into")
+	  (display "deal-into\n")
+	  (display "deal-with\n"))
+      (display "cut\n")))
+
+(define instructions '())
+(do ((s (read-line) (read-line)))
+  ((eof-object? s) 'done)
+    (let ((ins (string-split s #\space)))
+      (set! instructions (append instructions (list ins)))))
+
+(display instructions)(newline)
+(for-each map-ins instructions)
