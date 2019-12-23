@@ -1,3 +1,6 @@
+(use-modules (srfi srfi-1)) ;split-at
+(use-modules (srfi srfi-11)) ;let-values
+
 (define pack-size (read))
 
 (define (make-pack n c pack)
@@ -5,4 +8,19 @@
       (make-pack n (1+ c) (append pack (list c)))
       pack))
 
-(display (make-pack pack-size 0 '()))
+(display (make-pack pack-size 0 '()))(newline)
+(define test-pack (make-pack 10 0 '()))
+
+;deal into new stack
+(define (deal-into p)
+  (reverse p))
+
+(display (deal-into test-pack))(newline)
+
+;cut n cards
+(define (cut-cards-pos n p)
+  (let-values (((head tail) (split-at p n)))
+    (append tail head)))
+
+(display (cut-cards-pos 3 test-pack))(newline)
+
