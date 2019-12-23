@@ -33,7 +33,7 @@
 
 ;deal with increment n
 (define (deal-with-inc n p l ci res)
-  (define cj (floor (modulo l (+ ci n))))
+  (define cj (floor (modulo (+ ci n) l)))
   (if (null? p)
       res
       (begin
