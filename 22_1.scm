@@ -10,7 +10,8 @@
       pack))
 
 (define pack (make-pack pack-size 0 '()))
-(define test-pack (make-pack 10 0 '()))
+(define test-pack-len 100)
+(define test-pack (make-pack test-pack-len 0 '()))
 
 ;deal into new stack
 (define (deal-into p)
@@ -30,7 +31,7 @@
   (let-values (((head tail) (split-at p (- l n))))
     (append tail head)))
 
-(display (cut-cards-neg 4 test-pack 10))(newline)
+(display (cut-cards-neg 4 test-pack test-pack-len))(newline)
 
 ;deal with increment n
 (define (deal-with-inc-1 n p l ci res)
@@ -39,12 +40,13 @@
       res
       (begin
 	(list-set! res ci (car p))
-	(deal-with-inc-1 n (cdr p) 10 cj res))))
+	(deal-with-inc-1 n (cdr p) l cj res))))
 
 (define (deal-with-inc n p l)
   (deal-with-inc-1 n p l 0 (make-list l #f)))
 
-(display (deal-with-inc 3 test-pack 10))(newline)
+(display (deal-with-inc 3 test-pack test-pack-len))(newline)
+;(display (deal-with-inc 3 pack 10007))(newline)
 
 (define cur pack)
 (display cur)
@@ -67,6 +69,6 @@
     (let ((ins (string-split s #\space)))
       (set! instructions (append instructions (list ins)))))
 
-(display instructions)(newline)
+;(display instructions)(newline)
 (for-each map-ins instructions)
 (display cur)
