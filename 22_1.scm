@@ -17,10 +17,16 @@
 
 (display (deal-into test-pack))(newline)
 
-;cut n cards
+;cut n cards, positive
 (define (cut-cards-pos n p)
   (let-values (((head tail) (split-at p n)))
     (append tail head)))
 
 (display (cut-cards-pos 3 test-pack))(newline)
 
+;cut n cards, negative
+(define (cut-cards-neg n p l)
+  (let-values (((head tail) (split-at p (- l n))))
+    (append tail head)))
+
+(display (cut-cards-neg 4 test-pack 10))(newline)
