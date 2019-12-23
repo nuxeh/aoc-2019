@@ -2,7 +2,8 @@
 (use-modules (srfi srfi-11)) ;let-values
 (use-modules (ice-9 rdelim)) ;read-line
 
-(define pack-size 10007)
+(define pack-size (string->number (read-line)))
+(display (string-append "pack size: " (number->string pack-size) "\n"))
 
 (define (make-pack n c pack)
   (if (< c n)
@@ -17,21 +18,21 @@
 (define (deal-into p)
   (reverse p))
 
-(display (deal-into test-pack))(newline)
+;(display (deal-into test-pack))(newline)
 
 ;cut n cards, positive
 (define (cut-cards-pos n p)
   (let-values (((head tail) (split-at p n)))
     (append tail head)))
 
-(display (cut-cards-pos 3 test-pack))(newline)
+;(display (cut-cards-pos 3 test-pack))(newline)
 
 ;cut n cards, negative
 (define (cut-cards-neg n p l)
   (let-values (((head tail) (split-at p (- l n))))
     (append tail head)))
 
-(display (cut-cards-neg 4 test-pack test-pack-len))(newline)
+;(display (cut-cards-neg 4 test-pack test-pack-len))(newline)
 
 ;deal with increment n
 (define (deal-with-inc-1 n p l ci res)
@@ -45,11 +46,11 @@
 (define (deal-with-inc n p l)
   (deal-with-inc-1 n p l 0 (make-list l #f)))
 
-(display (deal-with-inc 3 test-pack test-pack-len))(newline)
+;(display (deal-with-inc 3 test-pack test-pack-len))(newline)
 ;(display (deal-with-inc 3 pack 10007))(newline)
 
 (define cur pack)
-(display cur)
+(display cur)(newline)
 
 (define (map-ins i)
   (define cur' '())
