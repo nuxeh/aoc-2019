@@ -81,4 +81,5 @@
 	  pos
 	  (find-2019 (cdr p) (1+ pos)))))
 
-(display (find-2019 cur 0))
+(display (find-2019 cur 0))(newline) ;part 1
+(display (list-ref cur 2020))        ;part 2
