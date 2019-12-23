@@ -30,3 +30,14 @@
     (append tail head)))
 
 (display (cut-cards-neg 4 test-pack 10))(newline)
+
+;deal with increment n
+(define (deal-with-inc n p l ci res)
+  (define cj (floor (modulo l (+ ci n))))
+  (if (null? p)
+      res
+      (begin
+	(list-set! res ci (car p))
+	(deal-with-inc n (cdr p) 10 cj res))))
+
+(display (deal-with-inc 3 test-pack 10 0 (make-list 10 #f)))(newline)
