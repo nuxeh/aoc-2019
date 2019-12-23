@@ -32,12 +32,15 @@
 (display (cut-cards-neg 4 test-pack 10))(newline)
 
 ;deal with increment n
-(define (deal-with-inc n p l ci res)
+(define (deal-with-inc-1 n p l ci res)
   (define cj (floor (modulo (+ ci n) l)))
   (if (null? p)
       res
       (begin
 	(list-set! res ci (car p))
-	(deal-with-inc n (cdr p) 10 cj res))))
+	(deal-with-inc-1 n (cdr p) 10 cj res))))
 
-(display (deal-with-inc 3 test-pack 10 0 (make-list 10 #f)))(newline)
+(define (deal-with-inc n p l)
+  (deal-with-inc-1 n p l 0 (make-list l #f)))
+
+(display (deal-with-inc 3 test-pack 10))(newline)
