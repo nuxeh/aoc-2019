@@ -2,7 +2,7 @@
 
 (define input (read))
 (define dim (length input))
-(define arr (make-array #\. dim dim))
+(define array (make-array #\. dim dim))
 
 (define (print-grid g)
   (pretty-print g #:display? #t))
@@ -11,7 +11,7 @@
 (define y 0)
 (for-each (lambda (line)
 	    (for-each (lambda (char)
-			(array-set! arr char y x)
+			(array-set! array char y x)
 			(set! x (1+ x)))
 		      line)
 	    (set! y (1+ y))
@@ -19,7 +19,7 @@
 	  input)
 
 (display input)(newline)
-(print-grid arr)
+(print-grid array)
 
 (define (n-adjacent? arr x y)
   (define nx 0)
@@ -34,6 +34,17 @@
       (if (eq? (array-ref arr (1- x) y) #\#)
 	  (set! ny (1+ nx))))
   (if (< x dim)
-      (if (eq? (array-ref arr (1- x) y) #\#)
+      (if (eq? (array-ref arr (1+ x) y) #\#)
 	  (set! ny (1+ nx))))
   (+ nx ny))
+
+(define (alive? arr x y)
+  (define adj (n-adjacent? arr x y))
+  (if (or (eq? adj 1) (eq? adj 2))
+      #\#
+      (if (not (eq? adj 1))
+	  #\.
+	  (array-ref arr x y))))
+
+(array-index-map! array (lambda (x y) (alive? array x y)))
+(print-grid array)
