@@ -1,0 +1,1 @@
+- The input instructions could be formatted as scheme expressions and directly `read` into the program.
