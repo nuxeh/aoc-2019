@@ -1,4 +1,5 @@
 (use-modules (ice-9 pretty-print))
+(use-modules (srfi srfi-1)) ;fold
 
 (define input (read))
 (define dim (length input))
@@ -52,6 +53,6 @@
   (array-index-map! res (lambda (y x) (if (eq? (array-ref a y x) #\#)
 					  (expt 2 (+ x (* y dim)))
 					  0)))
-  res)
+  (fold + 0 (map (lambda (e) (fold + 0 e)) (array->list res))))
 
 (print-grid (bio (gen array)))
