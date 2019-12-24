@@ -7,4 +7,4 @@
 (do ((c (read-line) (read-line)))
   ((eof-object? c) 'done)
   (set! result  (append result (list (string->list c)))))
-(display result)(newline)
+(write result)(newline)
