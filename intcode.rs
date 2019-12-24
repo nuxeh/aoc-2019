@@ -237,6 +237,7 @@ pub fn read_file(path: impl AsRef<Path>) -> Result<Vec<i64>, Box<dyn Error>> {
 #[derive(Debug, Clone, PartialEq)]
 pub enum Status {
     Paused,
+    Running,
     WaitingForInput,
     Complete,
 }
@@ -295,6 +296,7 @@ impl IntcodeComputer {
     }
 
     pub fn run(&mut self) -> Result<(), Box<dyn Error>> {
+        self.status = Status::Running;
         loop {
             // get intcode
             let intcode = Intcode::get(&self);
