@@ -1,7 +1,8 @@
 (use-modules (ice-9 pretty-print))
 
 (define input (read))
-(define arr (make-array #\. (length input) (length input)))
+(define dim (length input))
+(define arr (make-array #\. dim dim))
 
 (define (print-grid g)
   (pretty-print g #:display? #t))
@@ -19,3 +20,20 @@
 
 (display input)(newline)
 (print-grid arr)
+
+(define (n-adjacent? arr x y)
+  (define nx 0)
+  (define ny 0)
+  (if (> y 0)
+      (if (eq? (array-ref arr x (1- y)) #\#)
+	  (set! ny (1+ ny))))
+  (if (< y dim)
+      (if (eq? (array-ref arr x (1+ y)) #\#)
+	  (set! ny (1+ ny))))
+  (if (> x 0)
+      (if (eq? (array-ref arr (1- x) y) #\#)
+	  (set! ny (1+ nx))))
+  (if (< x dim)
+      (if (eq? (array-ref arr (1- x) y) #\#)
+	  (set! ny (1+ nx))))
+  (+ nx ny))
