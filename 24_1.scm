@@ -10,7 +10,6 @@
 (define y 0)
 (for-each (lambda (line)
 	    (for-each (lambda (char)
-			(display x)(display ", ")(display y)(newline)
 			(array-set! arr char y x)
 			(set! x (1+ x)))
 		      line)
