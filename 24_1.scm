@@ -50,7 +50,7 @@
 (define (bio a)
   (define res (make-array 0 dim dim))
   (array-index-map! res (lambda (y x) (if (eq? (array-ref a y x) #\#)
-					  (expt 2 x)
+					  (expt 2 (+ x (* y dim)))
 					  0)))
   res)
 
