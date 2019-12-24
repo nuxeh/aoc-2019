@@ -40,12 +40,13 @@
 
 (define (alive? arr y x)
   (define adj (n-adjacent? arr y x))
-  (display x)(display ", ")(display y)(newline)
+  (display x)(display ", ")(display y)(display " => ")(display adj)(newline)
   (if (or (eq? adj 1) (eq? adj 2))
       #\#
       (if (not (eq? adj 1))
 	  #\.
 	  (array-ref arr y x))))
 
-(array-index-map! array (lambda (x y) (alive? array x y)))
+(define new-arr (make-array #\. dim dim))
+(array-index-map! new-arr (lambda (x y) (alive? array x y)))
 (print-grid array)
