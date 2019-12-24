@@ -51,6 +51,9 @@
 	  (set! ret #\#)))
   ret)
 
-(define new-arr (make-array #\. dim dim))
-(array-index-map! new-arr (lambda (y x) (alive? array y x)))
-(print-grid new-arr)
+(define (gen a)
+  (define new-arr (make-array #\. dim dim))
+  (array-index-map! new-arr (lambda (y x) (alive? a y x)))
+  new-arr)
+
+(print-grid (gen array))
