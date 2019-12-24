@@ -14,7 +14,11 @@ fn main() {
         process::exit(1);
     });
 
-    (0..50).for_each(|n| println!("{}", n));
+    let computers: Vec<_> = (0..50)
+        .map(|n| spawn_computer(&mem, n))
+        .collect();
+
+    println!("{:?}", computers);
 }
 
 fn spawn_computer(mem: &[i64], n: usize) -> IntcodeComputer {
