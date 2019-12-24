@@ -234,7 +234,7 @@ pub fn read_file(path: impl AsRef<Path>) -> Result<Vec<i64>, Box<dyn Error>> {
     Ok(v)
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Status {
     Paused,
     WaitingForInput,
@@ -318,6 +318,15 @@ impl IntcodeComputer {
 
     fn print(&mut self, val: i64) {
         self.outputs.push(val);
+    }
+
+    fn give_input(&mut self, input: i64) -> Result<(), Box<dyn Error>> {
+        self.inputs.push_back(input);
+        if self.status == Status::WaitingForInput {
+            self.run()
+        } else {
+            Ok(())
+        }
     }
 }
 
