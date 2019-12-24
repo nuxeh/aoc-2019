@@ -134,7 +134,13 @@ impl Intcode {
         match self {
             Self::ADD(i, j, o) => o.set(comp, i.get(comp)? + j.get(comp)?),
             Self::MULT(i, j, o) => o.set(comp, i.get(comp)? * j.get(comp)?),
-            Self::SET(o) => {let r = comp.read()?; o.set(comp, r)},
+            Self::SET(o) => {
+                if let Ok(r) = comp.read() {
+                    o.set(comp, r);
+                } else {
+                    c = false;
+                }
+            },
             Self::DISP(i) => comp.print(i.get(comp)?),
             Self::JMPT(i, j) => {
                 if i.get(comp)? != 0 {
@@ -167,7 +173,7 @@ impl Intcode {
             Self::ERR() => return Err("invalid intcode".into()),
         };
 
-        if comp.ic == ic {
+        if c && comp.ic == ic {
             comp.ic += self.len();
         }
         Ok(c)
@@ -286,7 +292,6 @@ impl IntcodeComputer {
             if !intcode.exec(self)? {
                 break Ok(());
             }
-            //println!("{:?}", self.mem);
         }
     }
 
