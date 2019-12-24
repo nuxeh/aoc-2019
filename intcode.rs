@@ -138,6 +138,7 @@ impl Intcode {
                 if let Ok(r) = comp.read() {
                     o.set(comp, r);
                 } else {
+                    comp.status = Status::WaitingForInput;
                     c = false;
                 }
             },
@@ -169,7 +170,10 @@ impl Intcode {
             Self::ADJB(i) => {
                 comp.rel_base = (comp.rel_base as i64 + i.get(comp)?) as usize;
             },
-            Self::STOP() => (c = false),
+            Self::STOP() => {
+                c = false;
+                comp.status = Status::Complete;
+            },
             Self::ERR() => return Err("invalid intcode".into()),
         };
 
@@ -231,12 +235,20 @@ pub fn read_file(path: impl AsRef<Path>) -> Result<Vec<i64>, Box<dyn Error>> {
 }
 
 #[derive(Debug, Clone)]
+pub enum Status {
+    Paused,
+    WaitingForInput,
+    Complete,
+}
+
+#[derive(Debug, Clone)]
 pub struct IntcodeComputer {
     /// memory
     pub mem: Vec<i64>,
     /// instruction counter
     ic: usize,
     rel_base: usize,
+    pub status: Status,
     inputs: VecDeque<i64>,
     pub outputs: Vec<i64>,
     debug: bool,
@@ -248,6 +260,7 @@ impl IntcodeComputer {
             mem: vec!(),
             ic: 0,
             rel_base: 0,
+            status: Status::Paused,
             inputs: VecDeque::new(),
             outputs: vec!(),
             debug: true,
