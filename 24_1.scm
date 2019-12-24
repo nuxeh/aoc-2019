@@ -7,17 +7,6 @@
 (define (print-grid g)
   (pretty-print g #:display? #t))
 
-;(define x 0)
-;(define y 0)
-;(for-each (lambda (line)
-;	    (for-each (lambda (char)
-;			(array-set! array char y x)
-;			(set! x (1+ x)))
-;		      line)
-;	    (set! y (1+ y))
-;	    (set! x 0))
-;	  input)
-
 (array-index-map! array (lambda (y x)
 			  (list-ref (list-ref input y) x)))
 
@@ -57,3 +46,12 @@
   new-arr)
 
 (print-grid (gen array))
+
+(define (bio a)
+  (define res (make-array 0 dim dim))
+  (array-index-map! res (lambda (y x) (if (eq? (array-ref a y x) #\#)
+					  (expt 2 x)
+					  0)))
+  res)
+
+(print-grid (bio (gen array)))
