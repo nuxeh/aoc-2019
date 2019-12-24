@@ -51,5 +51,5 @@
 	  (array-ref arr y x))))
 
 (define new-arr (make-array #\. dim dim))
-(array-index-map! new-arr (lambda (x y) (alive? array x y)))
-(print-grid array)
+(array-index-map! new-arr (lambda (y x) (n-adjacent? array y x)))
+(print-grid new-arr)
