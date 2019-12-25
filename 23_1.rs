@@ -27,6 +27,7 @@ fn main() {
     });
     display_status(&computers);
     display_io(&computers);
+    tx(&mut computers);
 }
 
 fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
@@ -34,6 +35,15 @@ fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
         c.run()?
     }
     Ok(())
+}
+
+fn tx(computers: &mut [IntcodeComputer]) {
+    for c in computers {
+        while c.outputs.len() >= 3 {
+            let packet: Vec<_> = c.outputs.drain(0..3).collect();
+            println!("{:?}", packet);
+        }
+    }
 }
 
 fn display_status(computers: &[IntcodeComputer]) {
