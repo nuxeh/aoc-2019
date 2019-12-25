@@ -1,4 +1,5 @@
 use std::env;
+use std::error::Error;
 use std::process;
 use std::path::PathBuf;
 
@@ -14,11 +15,20 @@ fn main() {
         process::exit(1);
     });
 
-    let computers: Vec<_> = (0..50)
+    let mut computers: Vec<_> = (0..50)
         .map(|n| spawn_computer(&mem, n))
         .collect();
 
     println!("{:?}", computers);
+
+    run(&mut computers);
+}
+
+fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
+    for c in computers {
+        c.run()?
+    }
+    Ok(())
 }
 
 fn spawn_computer(mem: &[i64], n: usize) -> IntcodeComputer {
