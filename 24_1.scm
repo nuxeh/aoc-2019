@@ -56,3 +56,12 @@
   (fold + 0 (map (lambda (e) (fold + 0 e)) (array->list res))))
 
 (print-grid (bio (gen array)))
+
+(define (run m space bio-ratings)
+  (define new (gen space))
+  (define b (bio new))
+  (if (member b bio-ratings)
+      (begin (display b)(newline))
+      (run (1+ m) new (append bio-ratings (list b)))))
+
+(display (run 0 array '()))
