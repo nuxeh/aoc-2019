@@ -250,7 +250,7 @@ pub struct IntcodeComputer {
     ic: usize,
     rel_base: usize,
     pub status: Status,
-    inputs: VecDeque<i64>,
+    pub inputs: VecDeque<i64>,
     pub outputs: Vec<i64>,
     debug: bool,
 }
@@ -322,7 +322,7 @@ impl IntcodeComputer {
         self.outputs.push(val);
     }
 
-    fn give_input(&mut self, input: i64) -> Result<(), Box<dyn Error>> {
+    pub fn give_input(&mut self, input: i64) -> Result<(), Box<dyn Error>> {
         self.inputs.push_back(input);
         if self.status == Status::WaitingForInput {
             self.run()

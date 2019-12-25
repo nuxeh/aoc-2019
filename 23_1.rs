@@ -1,5 +1,5 @@
 use std::borrow::BorrowMut;
-
+use std::collections::HashMap;
 use std::env;
 use std::error::Error;
 use std::process;
@@ -40,13 +40,19 @@ fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
 }
 
 fn tx(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
+    let mut sends: HashMap<usize, Vec<i64>> = HashMap::new();
     for c in computers.borrow_mut() {
         while c.outputs.len() >= 3 {
             let packet: Vec<_> = c.outputs.drain(0..3).collect();
-            //computers[packet[0] as usize].give_input(packet[1])?;
-            //computers[packet[0] as usize].give_input(packet[2])?;
+            let target = packet[0] as usize;
+            if !sends.contains_key(&target) {
+                sends.insert(target, Vec::new());
+            }
+            sends.get_mut(&target).unwrap().push(packet[1]);
+            sends.get_mut(&target).unwrap().push(packet[2]);
         }
     }
+    println!("{:?}", sends);
     Ok(())
 }
 
