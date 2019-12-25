@@ -20,7 +20,10 @@ fn main() {
         .collect();
 
     display_status(&computers);
-    run(&mut computers);
+    run(&mut computers).unwrap_or_else(|e| {
+        eprintln!("error: {}", e);
+        process::exit(1);
+    });
     display_status(&computers);
 }
 
