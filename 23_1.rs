@@ -36,8 +36,12 @@ fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
 
 fn display_status(computers: &[IntcodeComputer]) {
     for (i, c) in computers.iter().enumerate() {
-        println!("[{}] {:?}", i, c.status);
+        print!("[{:<2}] {:<16}", i, format!("{:?}", c.status));
+        if (i + 1) % 4 == 0 {
+            println!("");
+        }
     }
+    println!("");
 }
 
 fn distribute() {}
