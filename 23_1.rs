@@ -19,7 +19,9 @@ fn main() {
         .map(|n| spawn_computer(&mem, n))
         .collect();
 
+    display_status(&computers);
     run(&mut computers);
+    display_status(&computers);
 }
 
 fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
@@ -28,6 +30,14 @@ fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
     }
     Ok(())
 }
+
+fn display_status(computers: &[IntcodeComputer]) {
+    for (i, c) in computers.iter().enumerate() {
+        println!("[{}] {:?}", i, c.status);
+    }
+}
+
+fn distribute() {}
 
 fn spawn_computer(mem: &[i64], n: usize) -> IntcodeComputer {
     IntcodeComputer::new()
