@@ -30,6 +30,9 @@ fn main() {
     display_status(&computers);
     display_io(&computers);
     tx(&mut computers);
+    display_io(&computers);
+    tx(&mut computers);
+    display_io(&computers);
 }
 
 fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
@@ -41,6 +44,7 @@ fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
 
 fn tx(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
     let mut sends: HashMap<usize, Vec<i64>> = HashMap::new();
+
     for c in computers.borrow_mut() {
         while c.outputs.len() >= 3 {
             let packet: Vec<_> = c.outputs.drain(0..3).collect();
@@ -52,7 +56,14 @@ fn tx(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
             sends.get_mut(&target).unwrap().push(packet[2]);
         }
     }
-    println!("{:?}", sends);
+
+    let blank = vec![-1];
+    for i in 0..computers.len() {
+        sends.get(&i).unwrap_or(&blank)
+            .iter()
+            .try_for_each(|v| computers[i].give_input(*v))?;
+    }
+
     Ok(())
 }
 
