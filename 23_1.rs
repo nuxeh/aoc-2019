@@ -1,3 +1,5 @@
+use std::borrow::BorrowMut;
+
 use std::env;
 use std::error::Error;
 use std::process;
@@ -37,13 +39,15 @@ fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn tx(computers: &mut [IntcodeComputer]) {
-    for c in computers {
+fn tx(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
+    for c in computers.borrow_mut() {
         while c.outputs.len() >= 3 {
             let packet: Vec<_> = c.outputs.drain(0..3).collect();
-            println!("{:?}", packet);
+            //computers[packet[0] as usize].give_input(packet[1])?;
+            //computers[packet[0] as usize].give_input(packet[2])?;
         }
     }
+    Ok(())
 }
 
 fn display_status(computers: &[IntcodeComputer]) {
