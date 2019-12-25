@@ -31,8 +31,10 @@ fn main() {
     display_io(&computers);
     tx(&mut computers);
     display_io(&computers);
-    tx(&mut computers);
-    display_io(&computers);
+    loop {
+        tx(&mut computers);
+        display_io(&computers);
+    }
 }
 
 fn run(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
@@ -59,6 +61,7 @@ fn tx(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
 
     let blank = vec![-1];
     for i in 0..computers.len() {
+        println!("{}", i);
         sends.get(&i).unwrap_or(&blank)
             .iter()
             .try_for_each(|v| computers[i].give_input(*v))?;
