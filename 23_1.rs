@@ -19,8 +19,6 @@ fn main() {
         .map(|n| spawn_computer(&mem, n))
         .collect();
 
-    println!("{:?}", computers);
-
     run(&mut computers);
 }
 
@@ -35,5 +33,6 @@ fn spawn_computer(mem: &[i64], n: usize) -> IntcodeComputer {
     IntcodeComputer::new()
         .load_mem_pad(mem)
         .input(n as i64)
+        .debug(false)
         .init()
 }
