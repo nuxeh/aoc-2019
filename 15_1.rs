@@ -1,6 +1,7 @@
 use std::env;
-use std::process;
+use std::error::Error;
 use std::path::PathBuf;
+use std::process;
 
 mod intcode;
 
@@ -32,7 +33,7 @@ struct Point {
     y: i64,
 }
 
-fn mv(mem: &[i64], path: &[i64], cmd: i64) -> i64 {
+fn mv(mem: &[i64], path: &[i64], cmd: i64) -> Result<i64, Box<dyn Error>> {
     let mut c = IntcodeComputer::new()
         .load_mem_pad(mem)
         .init();
@@ -42,15 +43,11 @@ fn mv(mem: &[i64], path: &[i64], cmd: i64) -> i64 {
     }
     c.input(cmd);
 
-    c.run().unwrap_or_else(|e| {
-        println!("err: {}", e);
-        process::exit(1);
-    });
-
-    c.outputs.pop().unwrap_or_else(|| {
-        eprintln!("no output provided after movement command");
-        process::exit(1);
-    })
+    c.run()?;
+    match c.outputs.pop() {
+        Some(r) => Ok(r),
+        None => Err("no output provided after movement command".into()),
+    }
 }
     
 fn find(path: Vec<Point>, x: i64, y: i64, c: &mut IntcodeComputer) {
