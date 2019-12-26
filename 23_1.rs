@@ -21,18 +21,17 @@ fn main() {
         .map(|n| spawn_computer(&mem, n))
         .collect();
 
-    display_status(&computers);
-    display_io(&computers);
-    run(&mut computers).unwrap_or_else(|e| {
-        eprintln!("error: {}", e);
-        process::exit(1);
-    });
-    display_status(&computers);
-    display_io(&computers);
-    tx(&mut computers);
-    display_io(&computers);
     loop {
-        tx(&mut computers);
+        display_io(&computers);
+        tx(&mut computers).unwrap_or_else(|e| {
+            eprintln!("error: {}", e);
+            process::exit(1);
+        });
+        display_io(&computers);
+        run(&mut computers).unwrap_or_else(|e| {
+            eprintln!("error: {}", e);
+            process::exit(1);
+        });
         display_io(&computers);
     }
 }
@@ -48,12 +47,16 @@ fn tx(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
     let mut sends: HashMap<usize, Vec<i64>> = HashMap::new();
 
     for c in computers.borrow_mut() {
+        println!("o  {:?}", c.outputs);
         while c.outputs.len() >= 3 {
             let packet: Vec<_> = c.outputs.drain(0..3).collect();
+            println!("-> {:?}", packet);
+
             let target = packet[0] as usize;
             if !sends.contains_key(&target) {
                 sends.insert(target, Vec::new());
             }
+
             sends.get_mut(&target).unwrap().push(packet[1]);
             sends.get_mut(&target).unwrap().push(packet[2]);
         }
@@ -61,11 +64,13 @@ fn tx(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
 
     let blank = vec![-1];
     for i in 0..computers.len() {
-        println!("{}", i);
+        //println!("{}", i);
         sends.get(&i).unwrap_or(&blank)
             .iter()
             .try_for_each(|v| computers[i].give_input(*v))?;
     }
+
+    println!("{:?}", sends.get(&255));
 
     Ok(())
 }
@@ -92,7 +97,6 @@ fn spawn_computer(mem: &[i64], n: usize) -> IntcodeComputer {
     IntcodeComputer::new()
         .load_mem_pad(mem)
         .input(n as i64)
-        .input(-1)
         .debug(false)
         .init()
 }
