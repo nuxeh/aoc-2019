@@ -323,6 +323,7 @@ impl IntcodeComputer {
     }
 
     pub fn give_input(&mut self, input: i64) -> Result<(), Box<dyn Error>> {
+        println!("given input: {}", input);
         self.inputs.push_back(input);
         if self.status == Status::WaitingForInput {
             self.run()
