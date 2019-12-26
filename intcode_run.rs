@@ -54,7 +54,7 @@ fn get_input() -> i64 {
         let mut s = String::new();
         print!("input> ");
         let _ = stdout().flush();
-        if let Err(e) = stdin().read_line(&mut s) {
+        if let Err(_) = stdin().read_line(&mut s) {
             continue;
         }
         if let Ok(i) = s.trim().parse::<i64>() {
