@@ -321,16 +321,6 @@ impl IntcodeComputer {
     fn print(&mut self, val: i64) {
         self.outputs.push(val);
     }
-
-    pub fn give_input(&mut self, input: i64) -> Result<(), Box<dyn Error>> {
-        //println!("given input: {}", input);
-        self.inputs.push_back(input);
-        if self.status == Status::WaitingForInput {
-            Ok(())//self.run()
-        } else {
-            Ok(())
-        }
-    }
 }
 
 #[test]

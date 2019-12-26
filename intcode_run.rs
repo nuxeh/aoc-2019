@@ -31,7 +31,7 @@ fn main() {
 
     loop {
         if comp.status == Status::WaitingForInput {
-            comp.give_input(get_input());
+            comp.input(get_input());
         }
 
         comp.run().unwrap_or_else(|e| {

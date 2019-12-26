@@ -67,7 +67,9 @@ fn tx(computers: &mut [IntcodeComputer]) -> Result<(), Box<dyn Error>> {
         //println!("{}", i);
         sends.get(&i).unwrap_or(&blank)
             .iter()
-            .try_for_each(|v| computers[i].give_input(*v))?;
+            .for_each(|v| {
+                computers[i].input(*v);
+            });
     }
 
     println!("{:?}", sends.get(&255));
