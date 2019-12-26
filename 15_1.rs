@@ -32,14 +32,27 @@ struct Point {
     y: i64,
 }
 
-fn move(c: &mut IntcodeComputer, cmd: i64) {
+fn mv(mem: &[i64], path: &[i64], cmd: i64) -> i64 {
+    let mut c = IntcodeComputer::new()
+        .load_mem_pad(mem)
+        .init();
+
+    for m in path {
+        c.input(*m);
+    }
     c.input(cmd);
+
     c.run().unwrap_or_else(|e| {
         println!("err: {}", e);
         process::exit(1);
     });
-    if 
 
+    c.outputs.pop().unwrap_or_else(|| {
+        eprintln!("no output provided after movement command");
+        process::exit(1);
+    })
+}
+    
 fn find(path: Vec<Point>, x: i64, y: i64, c: &mut IntcodeComputer) {
-    if c.input(1)
+    
 }
