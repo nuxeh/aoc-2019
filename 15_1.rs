@@ -15,17 +15,10 @@ fn main() {
         process::exit(1);
     });
 
-    let mut comp = IntcodeComputer::new()
-        .load_mem(mem)
-        .init();
-
-    comp.run().unwrap_or_else(|e| {
-        eprintln!("error in execution: {}", e);
-    });
-
-    println!("{:?}", comp.outputs);
-
-    println!("{:?}", find(vec![], 0, 0, &mut comp));
+    println!("{:?}", find(&mem, vec![], 0, 0).unwrap_or_else(|e| {
+        eprintln!("err: {}", e);
+        process::exit(1);
+    }));
 }
 
 struct Point {
@@ -36,6 +29,7 @@ struct Point {
 fn mv(mem: &[i64], path: &[i64], cmd: i64) -> Result<i64, Box<dyn Error>> {
     let mut c = IntcodeComputer::new()
         .load_mem_pad(mem)
+        .debug(false)
         .init();
 
     for m in path {
@@ -50,6 +44,26 @@ fn mv(mem: &[i64], path: &[i64], cmd: i64) -> Result<i64, Box<dyn Error>> {
     }
 }
     
-fn find(path: Vec<Point>, x: i64, y: i64, c: &mut IntcodeComputer) {
-    
+fn find(mem: &[i64], path: Vec<i64>, x: i64, y: i64) -> Result<usize, Box<dyn Error>> {
+//    (1..=4)
+//        .try_map(|cmd| mv(mem, &path, cmd))?
+//        .for_each(|m| {
+//            match m {
+//                1 => find(mem, [path.as_slice(), &[cmd]].concat(), 0, 0),
+//                2 => Ok(path.len()),
+//            };
+//        });
+
+    //println!("find");
+    for cmd in 1..=4 {
+        //println!("{}", cmd);
+        let res = mv(mem, &path, cmd)?;
+        match res {
+            1 => return find(mem, [path.as_slice(), &[cmd]].concat(), 0, 0),
+            2 => return Ok(path.len()),
+            _ => (),
+        };
+    }
+
+    Ok(0)
 }
