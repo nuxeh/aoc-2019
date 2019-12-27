@@ -59,16 +59,6 @@ fn mv(c: &mut IntcodeComputer, cmd: i64) -> Result<i64, Box<dyn Error>> {
 fn find(
     comp: &mut IntcodeComputer, path: Vec<i64>, x: i64, y: i64
 )-> Result<usize, Box<dyn Error>> {
-//    (1..=4)
-//        .try_map(|cmd| mv(mem, &path, cmd))?
-//        .for_each(|m| {
-//            match m {
-//                1 => find(mem, [path.as_slice(), &[cmd]].concat(), 0, 0),
-//                2 => Ok(path.len()),
-//            };
-//        });
-
-    //println!("find");
     for cmd in 1..=4 {
         //println!("{}", cmd);
         let res = mv(comp, cmd)?;
