@@ -60,7 +60,10 @@ fn find(mem: &[i64], path: Vec<i64>, x: i64, y: i64) -> Result<usize, Box<dyn Er
         let res = mv(mem, &path, cmd)?;
         match res {
             1 => return find(mem, [path.as_slice(), &[cmd]].concat(), 0, 0),
-            2 => return Ok(path.len()),
+            2 => {
+                eprintln!("found it, {}", path.len());
+                return Ok(path.len())
+            },
             _ => (),
         };
     }
